@@ -1,0 +1,12 @@
+[Desktop Entry]
+Name=Compiler
+Comment=A Quasar Framework app
+GenericName=Compiler
+Exec=compiler %U
+Icon=compiler
+Type=Application
+StartupNotify=true
+Categories=GNOME;GTK;Utility;
+X-Deepin-CreatedBy=com.deepin.dde.daemon.Launcher
+X-Deepin-AppID=compiler
+
