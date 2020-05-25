@@ -1,6 +1,5 @@
 {
   "dest": "dist/installers/",
-  "icon": "resources/Icon.png",
   "executableName": "compiler",
   "tags": [
     "Compiler"

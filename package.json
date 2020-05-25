@@ -6,7 +6,7 @@
   "author": "Raul Novelo Cruz <rnovelo.cruz98@gmail.com>",
   "scripts": {
     "build": "quasar build -m electron",
-    "win32": "electron-installer-windows --src ./dist/app-win32-x64/ --dest dist/installers/",
+    "win32": "electron-installer-windows --src dist/electron/Compiler-win32-x64 --dest dist/installers --arch amd64 --config config.json",
     "deb64": "electron-installer-debian --src ./dist/electron/Compiler-linux-x64/ --dest dist/installers/ --arch amd64 --config config.json"
   },
   "dependencies": {
@@ -21,6 +21,7 @@
     "electron-builder": "^22.6.1",
     "electron-debug": "^3.0.1",
     "electron-devtools-installer": "^2.2.4",
+    "electron-installer-windows": "^3.0.0",
     "electron-packager": "^14.2.1",
     "quasar-pak": "0.0.2",
     "vue-cli-plugin-buefy": "^0.3.7"
