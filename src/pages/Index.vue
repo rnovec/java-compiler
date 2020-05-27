@@ -53,6 +53,18 @@
             </button>
           </div>
         </div>
+        <div class="field" v-if="tokensFile">
+          <div class="control is-expanded">
+            <textarea
+              class="textarea has-text-left"
+              :value="tokensFile"
+              disabled
+            >
+            </textarea>
+          </div>
+          <hr>
+          <span> Descargar <a href="">tokens.txt</a> </span>
+        </div>
       </div>
       <!-- Developers -->
       <div class="columns is-desktop">
@@ -68,13 +80,13 @@
             <tbody>
               <tr
                 v-for="(token, i) in tokens.filter(
-                  el => el.type !== 'Syntax Error' && el.type !== 'SEP'
+                  el => el.type !== 'SEP' && el.type !== 'Unexpected Token'
                 )"
                 :key="i"
               >
                 <th>{{ token.token }}</th>
                 <td>
-                  {{ token.type + ++i }}
+                  {{ token.type }}
                 </td>
               </tr>
             </tbody>
@@ -85,18 +97,20 @@
           <table class="table">
             <thead>
               <tr>
-                <th>Token error</th>
-                <th>Lexema</th>
+                <th><abbr title="Token Error">Token err</abbr></th>
+                <th><abbr title="Lexema">Lexema</abbr></th>
                 <th>Linea</th>
-                <th>Descripción</th>
+                <th><abbr title="Descripción">Desc</abbr></th>
               </tr>
             </thead>
             <tbody>
               <tr
-                v-for="(token, i) in tokens.filter(el => el.type === 'Syntax Error')"
+                v-for="(token, i) in tokens.filter(
+                  el => el.type === 'Unexpected Token'
+                )"
                 :key="i"
               >
-                <th>SYNTAXERROR{{ ++i }}</th>
+                <th>SYNTAXERROR</th>
                 <td>
                   {{ token.token }}
                 </td>
@@ -116,12 +130,13 @@
 
 <script>
 import { getTokens } from './main'
-import { ALL, FUNC_TYPES } from './main'
+import { ARIT } from './main'
 export default {
   name: 'IndexPage',
   data () {
     return {
       fileName: '',
+      tokensFile: '',
       text: 'int abc(int a, int b)\n  a = b * c / 2',
       isLoading: false,
       tokens: []
@@ -132,11 +147,20 @@ export default {
   },
   methods: {
     test () {
-      console.log(this.text.search(ALL))
-      console.log(ALL.test(this.text))
-      console.log(ALL.exec(this.text))
+      console.log(this.text.search(ARIT))
+      console.log(ARIT.test(this.text))
+      console.log(ARIT.exec(this.text))
       this.tokens = getTokens(this.text)
-      console.log(this.tokens)
+      this.tokensFile = ''
+      this.tokens
+        .forEach(t => {
+          if (t.type === 'SEP')
+            this.tokensFile += t.token
+          else
+            this.tokensFile += t.type + ' '
+        })
+
+
     },
     selectedFile () {
       console.log('selected a file')

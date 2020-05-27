@@ -16,7 +16,7 @@ export function tokenize (s, parsers, deftok) {
   while (s) {
     t = null
     m = s.length
-    for (var key in parsers) {
+    for (const key in parsers) {
       r = parsers[key].exec(s)
       // try to choose the best match if there are several
       // where "best" is the closest to the current starting point
@@ -43,5 +43,13 @@ export function tokenize (s, parsers, deftok) {
     }
     s = s.substr(m + (t ? t.token.length : 0))
   }
+  for (const key in parsers) {
+    tokens.filter(t => t.type === key).forEach((t, i, arr) => {
+      if (t.type === 'SEP') return
+      arr[i].type = t.type + (++i)
+      console.log(t)
+    })
+  }
+
   return tokens
 }
