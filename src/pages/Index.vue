@@ -68,7 +68,7 @@
             <tbody>
               <tr
                 v-for="(token, i) in tokens.filter(
-                  el => el.type !== 'invalid' && el.type !== 'SPACE'
+                  el => el.type !== 'Syntax Error' && el.type !== 'SEP'
                 )"
                 :key="i"
               >
@@ -93,10 +93,10 @@
             </thead>
             <tbody>
               <tr
-                v-for="(token, i) in tokens.filter(el => el.type === 'invalid')"
+                v-for="(token, i) in tokens.filter(el => el.type === 'Syntax Error')"
                 :key="i"
               >
-                <th>ERRNOTMATCH{{ ++i }}</th>
+                <th>SYNTAXERROR{{ ++i }}</th>
                 <td>
                   {{ token.token }}
                 </td>
@@ -107,28 +107,6 @@
               </tr>
             </tbody>
           </table>
-          <div class="card">
-            <div class="card-content">
-              <p
-                v-html="
-                  tokens
-                    .map(t =>
-                      t.token === '\n'
-                        ? '\n'
-                        : t.type !== 'invalid'
-                        ? t.type
-                        : 'ERR1'
-                    )
-                    .join(' ')
-                "
-              ></p>
-            </div>
-            <footer class="card-footer">
-              <p class="card-footer-item">
-                <span> Descargar <a href="">tokens.txt</a> </span>
-              </p>
-            </footer>
-          </div>
         </div>
       </div>
       <!-- End Developers -->
@@ -144,7 +122,7 @@ export default {
   data () {
     return {
       fileName: '',
-      text: `int abc()\n`,
+      text: 'int abc(int a, int b)\n  a = b * c / 2',
       isLoading: false,
       tokens: []
     }
@@ -157,7 +135,6 @@ export default {
       console.log(this.text.search(ALL))
       console.log(ALL.test(this.text))
       console.log(ALL.exec(this.text))
-      console.log(ALL.compile(this.text))
       this.tokens = getTokens(this.text)
       console.log(this.tokens)
     },

@@ -5,9 +5,12 @@
   "description": "A Quasar Framework app",
   "author": "Raul Novelo Cruz <rnovelo.cruz98@gmail.com>",
   "scripts": {
+    "dev": "quasar dev -m electron -t mat",
     "build": "quasar build -m electron",
+    "build:win": "npm run build && npm run win32",
+    "build:deb": "npm run build && npm run deb64",
     "win32": "electron-installer-windows --src dist/electron/Compiler-win32-x64 --dest dist/installers --arch amd64 --config config.json",
-    "deb64": "npm run build && electron-installer-debian --src ./dist/electron/Compiler-linux-x64/ --dest dist/installers/ --arch amd64 --config config.json"
+    "deb64": "electron-installer-debian --src ./dist/electron/Compiler-linux-x64/ --dest dist/installers/ --arch amd64 --config config.json"
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",
