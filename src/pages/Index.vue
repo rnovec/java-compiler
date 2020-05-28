@@ -62,7 +62,7 @@
             >
             </textarea>
           </div>
-          <hr>
+          <hr />
           <span> Descargar <a href="">tokens.txt</a> </span>
         </div>
       </div>
@@ -78,12 +78,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr
-                v-for="(token, i) in tokens.filter(
-                  el => el.type !== 'SEP' && el.type !== 'Unexpected Token'
-                )"
-                :key="i"
-              >
+              <tr v-for="(token, i) in symbols" :key="i">
                 <th>{{ token.token }}</th>
                 <td>
                   {{ token.type }}
@@ -104,19 +99,14 @@
               </tr>
             </thead>
             <tbody>
-              <tr
-                v-for="(token, i) in tokens.filter(
-                  el => el.type === 'Unexpected Token'
-                )"
-                :key="i"
-              >
-                <th>SYNTAXERROR</th>
+              <tr v-for="(token, i) in errors" :key="i">
+                <th>{{ token.type }}</th>
                 <td>
                   {{ token.token }}
                 </td>
-                <td></td>
+                <td>{{ token.line }}</td>
                 <td>
-                  {{ token.type }}
+                  {{ token.description }}
                 </td>
               </tr>
             </tbody>
@@ -129,15 +119,16 @@
 </template>
 
 <script>
-import { getTokens } from './main'
-import { ARIT } from './main'
+import { getTokens, createTokensFile, validate } from './main'
+import { FUNC, ARIT } from './main'
 export default {
   name: 'IndexPage',
   data () {
     return {
       fileName: '',
       tokensFile: '',
-      text: 'int abc(int a, int b)\n  a = b * c / 2',
+      text: `void abc()
+  a = a +/ 1`,
       isLoading: false,
       tokens: []
     }
@@ -145,28 +136,30 @@ export default {
   created () {
     this.test()
   },
+  computed: {
+    symbols () {
+      return this.tokens.filter(el => el.type !== 'SEP' && !el.error)
+    },
+    errors () {
+      return validate(
+        this.tokens.filter(t => t.error),
+        this.tokensFile
+      )
+    }
+  },
   methods: {
     test () {
-      console.log(this.text.search(ARIT))
-      console.log(ARIT.test(this.text))
-      console.log(ARIT.exec(this.text))
+
+      // var division = this.text.split(FUNC)
+      // console.log(division)
+
       this.tokens = getTokens(this.text)
-      this.tokensFile = ''
-      this.tokens
-        .forEach(t => {
-          if (t.type === 'SEP')
-            this.tokensFile += t.token
-          else
-            this.tokensFile += t.type + ' '
-        })
-
-
+      this.tokensFile = createTokensFile(this.tokens)
     },
     selectedFile () {
       console.log('selected a file')
       let file = this.$refs.myFile.files[0]
       this.fileName = this.$refs.myFile.files[0].name
-      console.log(file)
       if (!file || file.type !== 'text/plain') return
 
       // Credit: https://stackoverflow.com/a/754398/52160

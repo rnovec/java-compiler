@@ -9,10 +9,11 @@
  *
  */
 export function tokenize (s, parsers, deftok) {
-  var m,
-    r,
-    t,
-    tokens = []
+  let m
+  let r
+  let t
+  let err = 1
+  const tokens = []
   while (s) {
     t = null
     m = s.length
@@ -34,8 +35,11 @@ export function tokenize (s, parsers, deftok) {
       // matched token - push that out as default or "unknown"
       tokens.push({
         token: s.substr(0, m),
-        type: deftok || 'unknown'
+        type: 'ERTK' + err,
+        error: true,
+        description: deftok || 'unknown'
       })
+      err++
     }
     if (t) {
       // push current token onto sequence
@@ -43,13 +47,5 @@ export function tokenize (s, parsers, deftok) {
     }
     s = s.substr(m + (t ? t.token.length : 0))
   }
-  for (const key in parsers) {
-    tokens.filter(t => t.type === key).forEach((t, i, arr) => {
-      if (t.type === 'SEP') return
-      arr[i].type = t.type + (++i)
-      console.log(t)
-    })
-  }
-
   return tokens
 }
