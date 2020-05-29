@@ -9,8 +9,6 @@
               type="search"
               rows="5"
               v-model="text"
-              @change="test()"
-              @input="test()"
               placeholder="» » » enter your code « « «"
             >
             </textarea>
@@ -25,7 +23,6 @@
                 type="file"
                 ref="myFile"
                 accept="text/plain"
-                @change="selectedFile(), test()"
                 name="resume"
               />
               <span class="file-cta">
@@ -53,18 +50,7 @@
             </button>
           </div>
         </div>
-        <div class="field" v-if="tokensFile">
-          <div class="control is-expanded">
-            <textarea
-              class="textarea has-text-left"
-              :value="tokensFile"
-              disabled
-            >
-            </textarea>
-          </div>
-          <hr />
-          <span> Descargar <a href="">tokens.txt</a> </span>
-        </div>
+
       </div>
       <!-- Developers -->
       <div class="columns is-desktop">
@@ -111,6 +97,19 @@
               </tr>
             </tbody>
           </table>
+          <div class="field" v-if="tokensFile">
+          <div class="control is-expanded">
+            <textarea
+              class="textarea has-text-left"
+              :value="tokensFile"
+              disabled
+            >
+            </textarea>
+          </div>
+          <br />
+          <span> Descargar <a href="">tokens.txt</a> </span>
+        </div>
+
         </div>
       </div>
       <!-- End Developers -->
@@ -127,8 +126,7 @@ export default {
     return {
       fileName: '',
       tokensFile: '',
-      text: `void abc()
-  a = a +/ 1`,
+      text: `void abc(int a)\n  a = a + 1\n`,
       isLoading: false,
       tokens: []
     }
