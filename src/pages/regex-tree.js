@@ -30,38 +30,57 @@ node6.options.push(node7)
 node7.options.push(node4, node5, node8)
 node8.options.push(node5)
 
-function validate (regex, code) {
-  return regex.re.test(code)
-}
-
+/**
+ * Funcion para validar una expresion regular
+ * apartir de un arbol
+ * @param {*} code
+ */
 export function validateRecursive (code) {
-  var regex = parent
-  var tokens = []
-  var childi = 0
-  var lastParent = parent
-  var lex = ''
+  let regex = parent
+  let childi = 0
+  let lastParent = parent
+  let lex = ''
+  const tokens = []
   for (var j = 0, i = 0; j < code.length; j++) {
     lex = code.slice(i, j)
     if (regex.stop.test(code[j])) {
-      var test = validate(regex, lex)
+      var test = regex.re.test(lex)
       if (test) {
         lastParent = regex
         console.log(regex.id, lex)
+        tokens.push({
+          token: lex,
+          type: regex.id
+        })
       } else if (lastParent.options.length > 1) {
         var err = true
         lastParent.options.forEach(element => {
-          test = validate(element, lex)
+          test = element.re.test(lex)
           if (test) {
             regex = element
             console.log(regex.id, lex)
+            tokens.push({
+              token: lex,
+              type: regex.id
+            })
             err = false
           }
         })
         if (err) {
           console.log(lex, regex.re, childi, test)
+          tokens.push({
+            token: lex,
+            type: regex.id,
+            error: true
+          })
         }
       } else {
         console.log(lex, regex.re, childi, test)
+        tokens.push({
+          token: lex,
+          type: regex.id,
+          error: true
+        })
       }
       i = j
       childi = 0
@@ -69,4 +88,5 @@ export function validateRecursive (code) {
       if (!regex) break
     }
   }
+  return tokens
 }

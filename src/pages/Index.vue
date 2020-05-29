@@ -118,15 +118,14 @@
 </template>
 
 <script>
-import { getTokens, createTokensFile, validate } from './main'
-import { FUNC, ARIT } from './main'
+import { getTokens, createTokensFile, getErrors } from './main'
 export default {
   name: 'IndexPage',
   data () {
     return {
       fileName: '',
       tokensFile: '',
-      text: `void abc(int a)\n  a = a + 1\n`,
+      text: `void ab2c(int a)\n  a = a + 1\n`,
       isLoading: false,
       tokens: []
     }
@@ -139,7 +138,7 @@ export default {
       return this.tokens.filter(el => el.type !== 'SEP' && !el.error)
     },
     errors () {
-      return validate(
+      return getErrors(
         this.tokens.filter(t => t.error),
         this.tokensFile
       )
@@ -147,10 +146,6 @@ export default {
   },
   methods: {
     test () {
-
-      // var division = this.text.split(FUNC)
-      // console.log(division)
-
       this.tokens = getTokens(this.text)
       this.tokensFile = createTokensFile(this.tokens)
     },
