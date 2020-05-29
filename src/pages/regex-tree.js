@@ -1,23 +1,33 @@
 class RegexNode {
-  constructor (id, re, stop, parentId = null) {
+  constructor (id, re, stop, description = '') {
     this.id = id
     this.re = re
     this.stop = stop
-    this.parentId = parentId
+    this.description = description
     this.options = []
   }
 }
 
-const parent = new RegexNode('TD', /^(string|int|float|void)$/, /\s/)
-const node1 = new RegexNode('SEP', /\s/, /[A-Za-z]|\d/)
-const node2 = new RegexNode('ID', /^[A-Za-z]+$/, /[(]/)
-const node3 = new RegexNode('DEL', /[(]/, /[A-Za-z]|\d|[)]/)
-const node4 = new RegexNode('DEL', /[)]/, /\s|\n/)
-const node5 = new RegexNode('TD', /(string|int|float)/, /\s/)
-const node6 = new RegexNode('SEP', /\s/, /[A-Za-z]|\d/)
-const node7 = new RegexNode('ID', /^[A-Za-z]+$/, /[)]|[,]/)
-const node8 = new RegexNode('COM', /[,]/, /\s/)
-const node9 = new RegexNode('SEP', /\n/, /\s/)
+const parent = new RegexNode(
+  'TD',
+  /^(string|int|float|void)$/,
+  /\s/,
+  'Type Error'
+)
+const node1 = new RegexNode('SEP', /\s/, /[A-Za-z]|\d/, 'Must be a space')
+const node2 = new RegexNode('ID', /^[A-Za-z]+$/, /\(|\[/, 'Identifier Error')
+const node3 = new RegexNode(
+  'DEL',
+  /\(/,
+  /[A-Za-z]|\d|[)]/,
+  'Start Delimiter Error'
+)
+const node4 = new RegexNode('DEL', /[)]/, /\s|\n/, 'End Delimiter Error')
+const node5 = new RegexNode('TD', /(string|int|float)/, /\s/, 'Type Error')
+const node6 = new RegexNode('SEP', /\s/, /[A-Za-z]|\d/, 'Must be a space')
+const node7 = new RegexNode('ID', /^[A-Za-z]+$/, /[)]|[,]/, 'Identifier Error')
+const node8 = new RegexNode('COM', /[,]/, /\s/, 'Comma Error')
+const node9 = new RegexNode('SEP', /\n/, /\s/, 'Must be a space')
 
 // funciones con o sin parametros
 parent.options.push(node1)
@@ -71,6 +81,7 @@ export function validateRecursive (code) {
           tokens.push({
             token: lex,
             type: regex.id,
+            description: regex.description,
             error: true
           })
         }
@@ -79,6 +90,7 @@ export function validateRecursive (code) {
         tokens.push({
           token: lex,
           type: regex.id,
+          description: regex.description,
           error: true
         })
       }

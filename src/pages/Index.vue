@@ -24,6 +24,7 @@
                 ref="myFile"
                 accept="text/plain"
                 name="resume"
+                @change="selectedFile()"
               />
               <span class="file-cta">
                 <span class="file-icon">
