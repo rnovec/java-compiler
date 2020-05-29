@@ -1,5 +1,13 @@
+/**
+ * Regex Node
+ *
+ * @param {String} id
+ * @param {RegExp} re
+ * @param {RegExp} stop
+ * @param {String} description
+ */
 class RegexNode {
-  constructor (id, re, stop, description = '') {
+  constructor (id, re, stop, description = 'Unexpected Token') {
     this.id = id
     this.re = re
     this.stop = stop
@@ -8,75 +16,110 @@ class RegexNode {
   }
 }
 
-const parent = new RegexNode(
+// create regex nodes patterns
+const TD1 = new RegexNode(
   'TD',
   /^(string|int|float|void)$/,
   /\s/,
   'Type Error'
 )
-const node1 = new RegexNode('SEP', /\s/, /[A-Za-z]|\d/, 'Must be a space')
-const node2 = new RegexNode('ID', /^[A-Za-z]+$/, /\(|\[/, 'Identifier Error')
-const node3 = new RegexNode(
+const SEP1 = new RegexNode('SEP', /\s/, /[A-Za-z]|\d/)
+const ID1 = new RegexNode('ID', /^[A-Za-z]+$/, /\(|\[/, 'Identifier Error')
+const DEL1 = new RegexNode(
   'DEL',
   /\(/,
   /[A-Za-z]|\d|[)]/,
   'Start Delimiter Error'
 )
-const node4 = new RegexNode('DEL', /[)]/, /\s|\n/, 'End Delimiter Error')
-const node5 = new RegexNode('TD', /(string|int|float)/, /\s/, 'Type Error')
-const node6 = new RegexNode('SEP', /\s/, /[A-Za-z]|\d/, 'Must be a space')
-const node7 = new RegexNode('ID', /^[A-Za-z]+$/, /[)]|[,]/, 'Identifier Error')
-const node8 = new RegexNode('COM', /[,]/, /\s/, 'Comma Error')
-const node9 = new RegexNode('SEP', /\n/, /\s/, 'Must be a space')
+const DEL2 = new RegexNode('DEL', /[)]/, /\s|\n/, 'End Delimiter Error')
+const TD2 = new RegexNode('TD', /(string|int|float)/, /\s/, 'Type Error')
+const SEP2 = new RegexNode('SEP', /\s/, /[A-Za-z]|\d/)
+const SEP3 = new RegexNode('ID', /^[A-Za-z]+$/, /[)]|[,]/, 'Identifier Error')
+const COMMA = new RegexNode('COM', /[,]/, /\s/, 'Comma Error')
+const SEP4 = new RegexNode('SEP', /\n/, /\s/)
 
-// funciones con o sin parametros
-parent.options.push(node1)
-node1.options.push(node2)
-node2.options.push(node3)
-node3.options.push(node4, node5)
-node4.options.push(node9)
-node5.options.push(node6)
-node6.options.push(node7)
-node7.options.push(node4, node5, node8)
-node8.options.push(node5)
+// functions rules definition
+TD1.options.push(SEP1) // Data Type follow by Separator
+SEP1.options.push(ID1) // Separator follow by Identifier
+ID1.options.push(DEL1) // Identifier follow by Start Delimiter
+DEL1.options.push(DEL2, TD2) // Start Delimiter follow by End Delimiter or Data Type
+DEL2.options.push(SEP4) // End Delimiter follow by Separator
+TD2.options.push(SEP2) // Data Type follow by Separator
+SEP2.options.push(SEP3) // Separator follow by Identifier
+SEP3.options.push(DEL2, TD2, COMMA) // Identifier follow by Delimiter, Data Type or Comma
+COMMA.options.push(TD2) // End Line
+
+// for artimentic operations definition
 
 /**
- * Funcion para validar una expresion regular
- * apartir de un arbol
- * @param {*} code
+ * RegexTree
+ *
+ * - Accept a RegexNode as parent node
+ *
+ * @param {RegexNode} root initial regex node
  */
-export function validateRecursive (code) {
-  let regex = parent
-  let childi = 0
-  let lastParent = parent
-  let lex = ''
-  const tokens = []
-  for (var j = 0, i = 0; j < code.length; j++) {
-    lex = code.slice(i, j)
-    if (regex.stop.test(code[j])) {
-      var test = regex.re.test(lex)
-      if (test) {
-        lastParent = regex
-        console.log(regex.id, lex)
-        tokens.push({
-          token: lex,
-          type: regex.id
-        })
-      } else if (lastParent.options.length > 1) {
-        var err = true
-        lastParent.options.forEach(element => {
-          test = element.re.test(lex)
-          if (test) {
-            regex = element
-            console.log(regex.id, lex)
+class RegexTree {
+  constructor (root) {
+    this.root = root
+  }
+
+  /**
+   * - Accepts a code string for parsing
+   * - Returns an array of token objects
+   *
+   * @param {String} code
+   */
+  validate (code) {
+    let regex = this.root
+    let childi = 0
+    let lastParent = regex
+    let lex = ''
+    const tokens = []
+
+    // loop for each character in code
+    for (var j = 0, i = 0; j < code.length; j++) {
+      lex = code.slice(i, j) // only match substring
+
+      // test if substring is a stop
+      if (regex.stop.test(code[j])) {
+        var test = regex.re.test(lex)
+        if (test) {
+          // update lastParent visited
+          // and push token object
+          lastParent = regex
+          console.log(regex.id, lex)
+          tokens.push({
+            token: lex,
+            type: regex.id
+          })
+        } else if (lastParent.options.length > 1) {
+          // if has children to validate
+          // verify if error exists
+          var err = true
+          lastParent.options.forEach(child => {
+            test = child.re.test(lex)
+            if (test) {
+              regex = child // update current regex
+              console.log(regex.id, lex)
+              tokens.push({
+                token: lex,
+                type: regex.id
+              })
+              err = false
+            }
+          })
+          if (err) {
+            // if error persist in children push token error object
+            console.log(lex, regex.re, childi, test)
             tokens.push({
               token: lex,
-              type: regex.id
+              type: regex.id,
+              description: regex.description,
+              error: true
             })
-            err = false
           }
-        })
-        if (err) {
+        } else {
+          // if error persist push token error object
           console.log(lex, regex.re, childi, test)
           tokens.push({
             token: lex,
@@ -85,20 +128,13 @@ export function validateRecursive (code) {
             error: true
           })
         }
-      } else {
-        console.log(lex, regex.re, childi, test)
-        tokens.push({
-          token: lex,
-          type: regex.id,
-          description: regex.description,
-          error: true
-        })
+        i = j // update start slice
+        childi = 0 // default first child
+        regex = regex.options[childi] // current regex = first regex child
+        if (!regex) break // stop if no child to match
       }
-      i = j
-      childi = 0
-      regex = regex.options[childi]
-      if (!regex) break
     }
+    return tokens
   }
-  return tokens
 }
+export default new RegexTree(TD1)
