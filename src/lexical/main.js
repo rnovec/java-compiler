@@ -1,5 +1,5 @@
 import { tokenize } from './tokenizer'
-import regexValidator from './regex-tree'
+import regexValidator from './sintax-tree'
 
 /**
  * Single parsers

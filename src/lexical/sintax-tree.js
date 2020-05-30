@@ -70,13 +70,12 @@ OP1.options.push(SPC6)
 SPC6.options.push(ID4, CNE1)
 
 /**
- * RegexTree
- *
- * - Accept a RegexNode as parent node
+ * AST - Abstract Sintax Tree
+ * Representation of the abstract syntactic structure of source code
  *
  * @param {RegexNode} root initial regex node
  */
-class RegexTree {
+class AbstractSintaxTree {
   constructor (root) {
     this.root = root
   }
@@ -155,4 +154,4 @@ class RegexTree {
     return tokens
   }
 }
-export default new RegexTree(TD1)
+export default new AbstractSintaxTree(TD1)

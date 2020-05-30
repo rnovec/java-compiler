@@ -15,6 +15,7 @@
   "dependencies": {
     "@quasar/extras": "^1.0.0",
     "buefy": "^0.8.0",
+    "esprima": "^4.0.1",
     "quasar": "^1.0.0"
   },
   "devDependencies": {
