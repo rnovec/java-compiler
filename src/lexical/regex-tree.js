@@ -128,7 +128,7 @@ class RegexTree {
           })
           if (err) {
             // if error persist in children push token error object
-            console.log(lex, regex.re, childi, test)
+            // console.log(lex, regex.re, childi, test)
             tokens.push({
               token: lex,
               type: regex.id,
@@ -138,7 +138,7 @@ class RegexTree {
           }
         } else {
           // if error persist push token error object
-          console.log(lex, regex.re, childi, test)
+          // console.log(lex, regex.re, childi, test)
           tokens.push({
             token: lex,
             type: regex.id,

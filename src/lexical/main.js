@@ -43,7 +43,6 @@ export function getTokens (code) {
   // else use compex validator
   if (FULL_PATTERN.test(code)) {
     tokens = tokenize(code, parsers, 'Unexpected Token')
-    console.log('full')
   } else {
     tokens = regexValidator.validate(code)
     console.log(tokens)
@@ -67,7 +66,6 @@ export function getTokens (code) {
 export function createTokensFile (tokens) {
   let tokensFile = ''
   tokens.forEach(t => {
-    console.log(t.type, t.token)
     if (t.token === '\n') tokensFile += t.token
     if (t.type === 'SPC') tokensFile += ''
     else tokensFile += t.type + ' '
