@@ -1,6 +1,24 @@
-# Quasar App (compiler)
+# Analizador Léxico
+Análizador léxico y sintáctico correspondiente a la materia de Lenguajes y Automatas I
 
-A Quasar Framework app
+# Estructura
+```
+/src
+├── layouts
+├── lexical
+│ ├── main.js
+│ ├── regex-tree.js
+│ └── tokenizer.js
+└── views
+│ └── Index.vue
+└── App.vue
+
+/resources
+└── compiler_0.0.1_amd64.deb
+
+README.md
+
+```
 
 ## Install the dependencies
 ```bash

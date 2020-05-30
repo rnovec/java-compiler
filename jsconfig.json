@@ -15,7 +15,7 @@
         "src/layouts/*"
       ],
       "pages/*": [
-        "src/pages/*"
+        "src/views/*"
       ],
       "assets/*": [
         "src/assets/*"
