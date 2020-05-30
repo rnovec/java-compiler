@@ -43,7 +43,7 @@
         <div class="field">
           <div class="control is-expanded">
             <button
-              @click="test()"
+              @click="compile()"
               class="button is-dark is-medium is-fullwidth"
               :class="isLoading ? ' is-loading ' : ''"
             >
@@ -51,7 +51,6 @@
             </button>
           </div>
         </div>
-
       </div>
       <!-- Developers -->
       <div class="columns is-desktop">
@@ -99,18 +98,17 @@
             </tbody>
           </table>
           <div class="field" v-if="tokensFile">
-          <div class="control is-expanded">
-            <textarea
-              class="textarea has-text-left"
-              :value="tokensFile"
-              disabled
-            >
-            </textarea>
+            <div class="control is-expanded">
+              <textarea
+                class="textarea has-text-left"
+                :value="tokensFile"
+                disabled
+              >
+              </textarea>
+            </div>
+            <br />
+            <span> Descargar <a download="tokens.txt" :href="encodedToken"> tokens.txt</a> </span>
           </div>
-          <br />
-          <span> Descargar <a href="">tokens.txt</a> </span>
-        </div>
-
         </div>
       </div>
       <!-- End Developers -->
@@ -125,18 +123,19 @@ export default {
   data () {
     return {
       fileName: '',
+      encodedToken: '',
       tokensFile: '',
-      text: `void ab2c(int a)\n  a = a + 1\n`,
+      text: `void abc(int a, int b, int a")\n  a = a + 1\n`,
       isLoading: false,
       tokens: []
     }
   },
   created () {
-    this.test()
+    this.compile()
   },
   computed: {
     symbols () {
-      return this.tokens.filter(el => el.type !== 'SEP' && !el.error)
+      return this.tokens.filter(el => el.type !== 'SPC' && !el.error)
     },
     errors () {
       return getErrors(
@@ -146,9 +145,10 @@ export default {
     }
   },
   methods: {
-    test () {
+    compile () {
       this.tokens = getTokens(this.text)
       this.tokensFile = createTokensFile(this.tokens)
+      this.encodedToken = 'data:text/plain;charset=utf-8,' + encodeURIComponent(this.tokensFile)
     },
     selectedFile () {
       console.log('selected a file')

@@ -1,8 +1,8 @@
 {
   "name": "compiler",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "private": true,
-  "description": "A Quasar Framework app",
+  "description": "Compilador para la materia Lenguajes y Autómatas I",
   "author": "Raul Novelo Cruz <rnovelo.cruz98@gmail.com>",
   "scripts": {
     "dev": "quasar dev -m electron -t mat",

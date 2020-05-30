@@ -10,8 +10,8 @@ const CNE = /\d+/
 const DEL = /[(]|[)]/
 const AS = /=/
 const OP = /([+]|[-]|[*]|[/])/
-const COM = /,/
-const SEP = /\s|\n/
+const SEP = /,/
+const SPC = /\s|\n/
 
 /**
  * Complex parsers
@@ -27,8 +27,8 @@ const parsers = {
   DEL,
   AS,
   OP,
-  COM,
-  SEP
+  SEP,
+  SPC
 }
 
 /**
@@ -51,7 +51,7 @@ export function getTokens (code) {
   // generate token ID with counter
   for (const key in parsers) {
     tokens
-      .filter(t => t.type === key && t.type !== 'SEP')
+      .filter(t => t.type === key && t.type !== 'SPC')
       .forEach((t, i, arr) => {
         t.error ? arr[i].type = 'ERLX' + t.type + ++i : arr[i].type = t.type + ++i
       })
@@ -67,7 +67,7 @@ export function createTokensFile (tokens) {
   let tokensFile = ''
   tokens.forEach(t => {
     if (t.token === '\n') tokensFile += t.token
-    if (t.type === 'SEP') tokensFile += ''
+    if (t.type === 'SPC') tokensFile += ''
     else tokensFile += t.type + ' '
   })
   return tokensFile
