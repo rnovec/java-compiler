@@ -125,7 +125,7 @@ export default {
       fileName: '',
       encodedToken: '',
       tokensFile: '',
-      text: `void abc(int a, int b, int a)\n  a = a + 1\n`,
+      text: `void abc(int a, int b, int a)\n  a = ab + 1\n`,
       isLoading: false,
       tokens: []
     }

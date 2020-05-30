@@ -35,7 +35,7 @@ const DEL2 = new RegexNode('DEL', /[)]/, /\s|\n/, 'End Delimiter Error')
 const TD2 = new RegexNode('TD', /(string|int|float)/, /\s/, 'Type Error')
 const SPC2 = new RegexNode('SPC', /\s/, /[A-Za-z]|\d/)
 const ID2 = new RegexNode('ID', /^[A-Za-z]+$/, /[)]|[,]/, 'Identifier Error')
-const SEP = new RegexNode('SEP', /[,]/, /\s/, 'Comma Error')
+const SEP1 = new RegexNode('SEP', /[,]/, /\s/, 'Comma Error')
 const SPC3 = new RegexNode('SPC', /\n/, /\s/)
 
 // functions rules definition
@@ -46,10 +46,28 @@ DEL1.options.push(DEL2, TD2) // Start Delimiter follow by End Delimiter or Data 
 DEL2.options.push(SPC3) // End Delimiter follow by Separator
 TD2.options.push(SPC2) // Data Type follow by Separator
 SPC2.options.push(ID2) // Separator follow by Identifier
-ID2.options.push(DEL2, TD2, SEP) // Identifier follow by Delimiter, Data Type or Comma
-SEP.options.push(TD2) // End Line
+ID2.options.push(DEL2, TD2, SEP1) // Identifier follow by Delimiter, Data Type or Comma
+SEP1.options.push(TD2) // End Line
 
 // for artimentic operations definition
+const SPC4 = new RegexNode('SPC', /\s+/, /[A-Za-z]|\d/)
+const ID3 = new RegexNode('ID', /^[A-Za-z]+$/, /\s/, 'Identifier Error')
+const SPC5 = new RegexNode('SPC', /^\s$/, /[=]/)
+const AS1 = new RegexNode('AS', /^\s{0,1}={1}$/, /\s/, 'Asign Symbol Error')
+const OP1 = new RegexNode('OP', /^\s{0,1}([+]|[-]|[/]|[*]){1}$/, /\s/, 'Operator Error')
+const SPC6 = new RegexNode('SPC', /\s/, /[A-Za-z]|\d/)
+const ID4 = new RegexNode('ID', /^\s{0,1}([A-Za-z]+)$/, /\s/, 'Identifier Error')
+const CNE1 = new RegexNode('CNE', /^\d+$/, /\s/, 'Operand Error')
+
+SPC3.options.push(SPC4)
+SPC4.options.push(ID3)
+ID3.options.push(SPC5)
+SPC5.options.push(AS1)
+AS1.options.push(ID4, CNE1)
+ID4.options.push(OP1)
+CNE1.options.push(OP1)
+OP1.options.push(SPC6)
+SPC6.options.push(ID4, CNE1)
 
 /**
  * RegexTree
@@ -79,7 +97,7 @@ class RegexTree {
     // loop for each character in code
     for (var j = 0, i = 0; j < code.length; j++) {
       lex = code.slice(i, j) // only match substring
-
+      // lex = lex.replace(/\s/, '')
       // test if substring is a stop
       if (regex.stop.test(code[j])) {
         var test = regex.re.test(lex)
@@ -87,7 +105,7 @@ class RegexTree {
           // update lastParent visited
           // and push token object
           lastParent = regex
-          console.log(regex.id, lex)
+          // console.log(regex.id, lex)
           tokens.push({
             token: lex,
             type: regex.id
@@ -100,7 +118,7 @@ class RegexTree {
             test = child.re.test(lex)
             if (test) {
               regex = child // update current regex
-              console.log(regex.id, lex)
+              // console.log(regex.id, lex)
               tokens.push({
                 token: lex,
                 type: regex.id
