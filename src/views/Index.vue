@@ -107,7 +107,10 @@
               </textarea>
             </div>
             <br />
-            <span> Descargar <a download="tokens.txt" :href="encodedToken"> tokens.txt</a> </span>
+            <span>
+              Descargar
+              <a download="tokens.txt" :href="encodedToken"> tokens.txt</a>
+            </span>
           </div>
         </div>
       </div>
@@ -115,6 +118,17 @@
     </div>
   </div>
 </template>
+
+<style scoped>
+textarea {
+  background: url('http://i.imgur.com/2cOaJ.png');
+  background-attachment: local;
+  background-repeat: no-repeat;
+  padding-left: 35px;
+  padding-top: 10px;
+  border-color: #ccc;
+}
+</style>
 
 <script>
 import { getTokens, createTokensFile, getErrors } from '../lexical/main'
@@ -148,7 +162,8 @@ export default {
     compile () {
       this.tokens = getTokens(this.text)
       this.tokensFile = createTokensFile(this.tokens)
-      this.encodedToken = 'data:text/plain;charset=utf-8,' + encodeURIComponent(this.tokensFile)
+      this.encodedToken =
+        'data:text/plain;charset=utf-8,' + encodeURIComponent(this.tokensFile)
     },
     selectedFile () {
       console.log('selected a file')
