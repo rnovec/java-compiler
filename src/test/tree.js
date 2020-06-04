@@ -1,112 +1,127 @@
-class Tree {
-  constructor (root) {
-    this._root = root || null
-  }
-
-  _traverse (callback) {
-    const self = this
-    function goThrough (node) {
-      callback(node)
-      node.children.forEach(child => {
-        goThrough(child)
-      })
-    }
-    goThrough(this._root, self)
-  }
-
-  _addNode (value, parentValue) {
-    const newNode = {
-      value,
-      children: []
-    }
-
-    if (this._root === null) {
-      this._root = newNode
-      return
-    }
-
-    this._traverse(node => {
-      if (node.value === parentValue) {
-        node.children.push(newNode)
-      }
-    })
-  }
-
-  _removeNode (value) {
-    this._traverse(node => {
-      node.children.forEach((childNode, index) => {
-        if (childNode.value === value) {
-          node.children.splice(index, 1)
-        }
-      })
-    })
-  }
-
-  _search (value) {
-    let returnNode = 'Not Found'
-    this._traverse(node => {
-      if (node.value === value) {
-        returnNode = node
-      }
-    })
-    return returnNode
-  }
-
-  _displayLeafs (parentValue) {
-    const parentNode =
-      typeof parentValue === 'string' ? this._search(parentValue) : parentValue
-    const leafsRet = []
-    if (parentValue.children && !parentValue.children.length) {
-      return parentValue
-    }
-
-    parentNode.children.forEach(child => {
-      leafsRet.push(this._displayLeafs(child))
-    })
-
-    return leafsRet.flat()
-  }
-}
-
 class Node {
-  constructor (value, children) {
+  constructor (data) {
+    this.left = null
+    this.right = null
     this.value = value
-    this.children = children
   }
 }
 
-const tree = new Tree()
-let lex = ''
-const q = []
-const code =
-  '\nvoid abc()\n  a = ab + 112 + bb\na = ab + 1\n\nvoid void(int a)\n  a = ab + 1\nvoid abc(int a, int b, int a)\n  a = ab + 1'
+class BST {
+  constructor () {
+    this.root = null
+  }
 
-for (var i = 0; i < code.length; i++) {
-  if (/\(|\)|,|(\+|-|\*|\/|=)/.test(code[i])) {
-    q.push(lex)
-    q.push(code[i])
-    lex = ''
-  } else if (/\s/.test(code[i])) {
-    q.push(lex)
-    lex = ''
-  } else {
-    lex += code[i]
+  // Insert a value as a node in the BST
+  insert (value) {
+    let newNode = new Node(value)
+
+    // If root empty, set new node as the root
+    if (!this.root) {
+      this.root = newNode
+    } else {
+      this.insertNode(this.root, newNode)
+    }
+  }
+
+  // helper function
+  insertNode (root, newNode) {
+    if (newNode.value < root.value) {
+      // If no left child, then just insesrt to the left
+      if (!root.left) {
+        root.left = newNode
+      } else {
+        this.insertNode(root.left, newNode)
+      }
+    } else {
+      // If no right child, then just insesrt to the right
+      if (!root.right) {
+        root.right = newNode
+      } else {
+        this.insertNode(root.right, newNode)
+      }
+    }
+  }
+
+  // Remove a node with the value passed
+  remove (value) {
+    if (!this.root) {
+      return 'Tree is empty!'
+    } else {
+      this.removeNode(this.root, value)
+    }
+  }
+
+  // helper function
+  removeNode (root, value) {
+    if (!root) {
+      return null
+    }
+
+    // If value is less than root value, go to the left subtree
+    if (value < root.value) {
+      root.left = this.removeNode(root.left, value)
+      return root
+      // If value is greater than root value, go to the right subtree
+    } else if (value > root.value) {
+      root.right = this.removeNode(root.right, value)
+      return root
+      // If we found the value, remove the node
+    } else {
+      // If no child nodes, just remove the node
+      if (!root.left && !root.right) {
+        root = null
+        return root
+      }
+
+      // If one child (left)
+      if (root.left) {
+        root = root.left
+        return root
+        // If one child (right)
+      } else if (root.right) {
+        root = root.right
+        return root
+      }
+
+      // If two child nodes (both)
+      // Get the minimum of the right subtree to ensure we have valid replacement
+      let minRight = this.findMinNode(root.right)
+      root.value = minRight.value
+
+      // Make sure we remove the node that we replaced the deleted node
+      root.right = this.removeNode(root.right, minRight.value)
+      return root
+    }
+  }
+
+  findMinNode (root) {
+    if (!root.left) {
+      return root
+    } else {
+      return this.findMinNode(root.left)
+    }
+  }
+
+  // Return boolean value depending on the existence of the value in the tree
+  search (value) {
+    if (!this.root) {
+      return 'Tree is empty'
+    } else {
+      return Boolean(this.searchNode(this.root, value))
+    }
+  }
+
+  searchNode (root, value) {
+    if (!root) {
+      return null
+    }
+
+    if (value < root.value) {
+      return this.searchNode(root.left, value)
+    } else if (value > root.value) {
+      return this.searchNode(root.right, value)
+    }
+
+    return root
   }
 }
-
-tree._addNode('TD1')
-tree._addNode('ID1', 'TD1')
-tree._addNode('Routers', 'TD1')
-tree._addNode('Desktop Computers', 'TD1')
-
-tree._addNode('DEL1', 'ID1')
-tree._addNode('Asus', 'ID1')
-
-tree._addNode('DEL2', 'DEL1')
-tree._addNode('END', 'DEL1')
-
-tree._traverse(node => {
-  console.log(node.value)
-})
-
-console.log(tree._displayLeafs('ID1'))

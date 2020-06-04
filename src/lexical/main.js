@@ -1,5 +1,5 @@
 import { tokenize } from './tokenizer'
-import regexValidator from './sintax-tree'
+import { sintaxAnalyzer } from './sintax-analizer'
 
 /**
  * Single parsers
@@ -11,14 +11,11 @@ const DEL = /[(]|[)]/
 const AS = /=/
 const OP = /([+]|[-]|[*]|[/])/
 const SEP = /,/
-const SPC = /\s|\n/
 
 /**
  * Complex parsers
  */
-const FUNC = /(string|int|float|void)\s([A-Za-z]+)[(](([)]|(string|int|float)\s[A-Za-z]+|[,]\s(string|int|float)\s[A-Za-z]+)*[)])/g
-const ARIT = /^[A-Za-z]+\s[=]\s([A-Za-z]+|\d+)(\s([+]|[-]|[*]|\/)\s([A-Za-z]+|\d+))*$/g
-const FULL_PATTERN = /((string|int|float|void)\s([A-Za-z]+)[(](([)]|(string|int|float)\s[A-Za-z]+|[,]\s(string|int|float)\s[A-Za-z]+)*[)])\n)(^(\s\s|\t)[A-Za-z]+\s[=]\s([A-Za-z]+|\d+)(\s(\+|-|\*|\/)\s([A-Za-z]+|\d+))*$)/gm
+const FULL_PATTERN = /(\w+\s(\w+)[(](([)]|\w+\s\w+|[,]\s\w+\s\w+)*[)])\n)(^(\s\s|\t)\w+\s[=]\s(\w+|\d+)(\s(\+|-|\*|\/)\s(\w+|\d+))*$)/gm
 
 const parsers = {
   TD,
@@ -27,8 +24,7 @@ const parsers = {
   DEL,
   AS,
   OP,
-  SEP,
-  SPC
+  SEP
 }
 
 /**
@@ -36,24 +32,14 @@ const parsers = {
  * @param {String} code
  */
 export function getTokens (code) {
-  let tokens = []
-
-  // if match full paterns
-  // then use tiny tokenizer
-  // else use compex validator
-  if (FULL_PATTERN.test(code)) {
-    tokens = tokenize(code, parsers, 'Unexpected Token')
-  } else {
-    tokens = regexValidator.validate(code)
-    console.log(tokens)
-  }
+  const tokens = sintaxAnalyzer(code).flat()
 
   // generate token ID with counter
   for (const key in parsers) {
     tokens
-      .filter(t => t.type === key && t.type !== 'SPC')
+      .filter(t => t.token === key)
       .forEach((t, i, arr) => {
-        t.error ? arr[i].type = 'ERLX' + t.type + ++i : arr[i].type = t.type + ++i
+        t.error ? arr[i].token = 'ERLX' + t.token + ++i : arr[i].token = t.token + ++i
       })
   }
   return tokens
@@ -66,28 +52,8 @@ export function getTokens (code) {
 export function createTokensFile (tokens) {
   let tokensFile = ''
   tokens.forEach(t => {
-    if (t.token === '\n') tokensFile += t.token
-    if (t.type === 'SPC') tokensFile += ''
-    else tokensFile += t.type + ' '
+    if (t.lex === '\n') tokensFile += t.lex
+    else tokensFile += t.token + ' '
   })
   return tokensFile
-}
-
-/**
- * Filter errors and find line error
- * @param {Array} errors
- * @param {String} tokensFile
- */
-export function getErrors (errors, tokensFile) {
-  errors.forEach(err => {
-    let index = null
-    // try to find token error ID
-    // in tokenFile and get line index
-    tokensFile.split('\n').forEach((el, i) => {
-      if (el.indexOf(err.type) !== -1) index = i
-    })
-    err.line = index
-    return err
-  })
-  return errors
 }

@@ -1,3 +1,10 @@
+/**
+ * Base Token
+ *
+ * @param {String} type
+ * @param {RegExp} re
+ * @param {String} description
+ */
 class Token {
   constructor (type, re, description) {
     this.type = type
@@ -8,8 +15,7 @@ class Token {
   gettok (lex, line) {
     const t = {
       lex,
-      token: this.type,
-      error: false
+      token: this.type
     }
     if (!this.re.test(lex)) {
       t.message = this.description
@@ -20,12 +26,18 @@ class Token {
   }
 }
 
+/**
+ * Identifier Token
+ *
+ * @param {String} type
+ * @param {RegExp} re
+ * @param {String} description
+ */
 class IdentifierToken extends Token {
   gettok (lex, line) {
     const t = {
       lex,
-      token: this.type,
-      error: false
+      token: this.type
     }
     if (!this.re.test(lex) || /^(string|int|float|void)$/.test(lex)) {
       t.message = this.description
@@ -45,10 +57,10 @@ const AS = new Token('AS', /^={1}$/, 'Asignation Error')
 const OP = new Token('OP', /^(\+|-|\*|\/){1}$/, 'Operator Error')
 const CNE = new Token('CNE', /^\d+$/, 'Operand Error')
 
-function multitok (regex, lex) {
+function multitok (regex, lex, numline) {
   const TOKENS = []
   regex.forEach((re, i) => {
-    TOKENS.push(re.gettok(lex[i]))
+    TOKENS.push(re.gettok(lex[i], numline))
   })
   return TOKENS
 }
@@ -72,7 +84,7 @@ function splitter (code) {
   return q.filter(q => q.length)
 }
 
-function sintaxAnalyzer (input) {
+export function sintaxAnalyzer (input) {
   const LINES = []
   const TOKENS = []
   const OPERANDS = /(\+|-|\*|\/)/
@@ -86,31 +98,31 @@ function sintaxAnalyzer (input) {
   LINES.forEach((line, numline) => {
     if (/\(\)$/.test(line.code)) {
       // funcion sin paramatros
-      TOKENS.push(multitok([TD, ID, DEL, DEL], line.lexemes))
+      TOKENS.push(multitok([TD, ID, DEL, DEL], line.lexemes, numline))
     } else if (/\((\w|\d)*\s(\w|\d)*\)$/.test(line.code)) {
       // funcion con un parametro
-      TOKENS.push(multitok([TD, ID, DEL, TD, ID, DEL], line.lexemes))
+      TOKENS.push(multitok([TD, ID, DEL, TD, ID, DEL], line.lexemes, numline))
     } else if (/([,]\s(\w|\d)*\s(\w|\d)*)+\)/.test(line.code)) {
       // funcion con parametros
       const acc = []
       let param = []
-      acc.push(...multitok([TD, ID, DEL, TD, ID], line.lexemes))
+      acc.push(...multitok([TD, ID, DEL, TD, ID], line.lexemes, numline))
       line.lexemes.slice(5, -1).forEach(lex => {
         param.push(lex)
         if (param.length === 3) {
-          acc.push(...multitok([SEP, TD, ID], param))
+          acc.push(...multitok([SEP, TD, ID], param, numline))
           param = []
         }
       })
-      acc.push(DEL.gettok(line.lexemes[line.lexemes.length - 1]))
+      acc.push(DEL.gettok(line.lexemes[line.lexemes.length - 1], numline))
       TOKENS.push(acc)
     } else if (OPERANDS.test(line.code)) {
       const acc = []
       let arit = ''
-      acc.push(...multitok([ID, AS], line.lexemes))
+      acc.push(...multitok([ID, AS], line.lexemes, numline))
       line.lexemes.slice(2, line.lexemes.length).forEach(lex => {
         if (/\d+/.test(lex)) {
-          acc.push(CNE.gettok(lex))
+          acc.push(CNE.gettok(lex, numline))
         } else if (OPERANDS.test(lex)) {
           if (OPERANDS.test(arit)) {
             acc.push({
@@ -120,20 +132,15 @@ function sintaxAnalyzer (input) {
               message: 'Operator Error',
               line: numline
             })
-          } else acc.push(OP.gettok(lex))
+          } else acc.push(OP.gettok(lex, numline))
         } else {
-          acc.push(ID.gettok(lex))
+          acc.push(ID.gettok(lex, numline))
         }
         arit = lex
       })
       TOKENS.push(acc)
-    } else if (!line.code.length) {
-      TOKENS.push([])
     }
+    TOKENS.push([{ lex: '\n' }])
   })
   return TOKENS
 }
-const input =
-  '\nvoid abc()\n  a = ab + 112 + bb\na = ab + 1\n\nvoid void(int a)\n  a = ab + 1\nvoid abc(int a, int b, int a)\n  a = ab + 1'
-
-console.log(sintaxAnalyzer(input))

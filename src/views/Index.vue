@@ -5,10 +5,14 @@
         <div class="field">
           <div class="control is-expanded">
             <textarea
+              style="overflow:hidden"
+              v-autosize
               class="textarea has-text-left"
               type="search"
-              rows="5"
+              rows="7"
               v-model="text"
+              @input="compile()"
+              @change="compile()"
               placeholder="» » » enter your code « « «"
             >
             </textarea>
@@ -24,7 +28,7 @@
                 ref="myFile"
                 accept="text/plain"
                 name="resume"
-                @change="selectedFile()"
+                @change="selectedFile(), compile()"
               />
               <span class="file-cta">
                 <span class="file-icon">
@@ -65,9 +69,9 @@
             </thead>
             <tbody>
               <tr v-for="(token, i) in symbols" :key="i">
-                <th>{{ token.token }}</th>
+                <th>{{ token.lex }}</th>
                 <td>
-                  {{ token.type }}
+                  {{ token.token }}
                 </td>
               </tr>
             </tbody>
@@ -86,13 +90,13 @@
             </thead>
             <tbody>
               <tr v-for="(token, i) in errors" :key="i">
-                <th>{{ token.type }}</th>
+                <th>{{ token.token }}</th>
                 <td>
-                  {{ token.token }}
+                  {{ token.lex }}
                 </td>
-                <td>{{ token.line }}</td>
+                <td>{{ token.line + 1 }}</td>
                 <td>
-                  {{ token.description }}
+                  {{ token.message }}
                 </td>
               </tr>
             </tbody>
@@ -100,6 +104,8 @@
           <div class="field" v-if="tokensFile">
             <div class="control is-expanded">
               <textarea
+                style="overflow:hidden"
+                v-autosize
                 class="textarea has-text-left"
                 :value="tokensFile"
                 disabled
@@ -127,6 +133,8 @@ textarea {
   padding-left: 35px;
   padding-top: 10px;
   border-color: #ccc;
+  font-size: 13px;
+  line-height: 16px;
 }
 </style>
 
@@ -139,7 +147,7 @@ export default {
       fileName: '',
       encodedToken: '',
       tokensFile: '',
-      text: `void abc(int a, int b, int a)\n  a = ab + 1\n`,
+      text: `\nvoid abc()\n a = ab + 112 + bb\na = ab + 1\n\nvoid int(int a)\n a = ab + 1\nvoid abc(int a, int b, int a)\n a = ab + 1`,
       isLoading: false,
       tokens: []
     }
@@ -149,13 +157,10 @@ export default {
   },
   computed: {
     symbols () {
-      return this.tokens.filter(el => el.type !== 'SPC' && !el.error)
+      return this.tokens.filter(el => el.lex !== '\n' && !el.error)
     },
     errors () {
-      return getErrors(
-        this.tokens.filter(t => t.error),
-        this.tokensFile
-      )
+      return this.tokens.filter(t => t.error)
     }
   },
   methods: {
@@ -166,7 +171,6 @@ export default {
         'data:text/plain;charset=utf-8,' + encodeURIComponent(this.tokensFile)
     },
     selectedFile () {
-      console.log('selected a file')
       let file = this.$refs.myFile.files[0]
       this.fileName = this.$refs.myFile.files[0].name
       if (!file || file.type !== 'text/plain') return
@@ -179,6 +183,22 @@ export default {
       }
       reader.onerror = evt => {
         console.error(evt)
+      }
+    }
+  },
+  directives: {
+    autosize: {
+      inserted: function (el)  {
+        el.style.height = el.scrollHeight + 'px'
+        el.style.overflow = 'hidden'
+        el.style.resize = 'none'
+        function OnInput () {
+          el.style.height = 'auto'
+          el.style.height = el.scrollHeight + 'px'
+          el.scrollTop = el.scrollHeight
+          window.scrollTo(window.scrollLeft, el.scrollTop + el.scrollHeight)
+        }
+        el.addEventListener('textarea', OnInput, false)
       }
     }
   }
