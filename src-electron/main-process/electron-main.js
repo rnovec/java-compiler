@@ -36,6 +36,8 @@ function createWindow () {
   })
 
   mainWindow.loadURL(process.env.APP_URL)
+  mainWindow.maximize()
+  // mainWindow.setFullScreen(true)
 
   mainWindow.on('closed', () => {
     mainWindow = null

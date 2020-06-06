@@ -3,8 +3,8 @@
     <!-- <nav class="navbar is-dark">
       <div class="container">
         <div class="navbar-brand">
-          <a class="navbar-item" href="../">
-            <img alt="Logo" />
+          <a class="navbar-item is-size-2">
+            Analizador Léxico & Sintáctico
           </a>
           <span class="navbar-burger burger" data-target="navbarMenu">
             <span></span>
@@ -12,7 +12,7 @@
             <span></span>
           </span>
         </div>
-        <div id="navbarMenu" class="navbar-menu">
+       <div id="navbarMenu" class="navbar-menu">
           <div class="navbar-end">
             <a class="navbar-item is-active">
               Home
@@ -60,13 +60,32 @@
     <div class="hero is-small has-text-centered is-dark is-bold">
       <div class="hero-body">
         <div class="container">
-          <br>
+          <br />
           <p class="title is-size-1">
             Analizador Léxico & Sintáctico
           </p>
           <p class="subtitle">
-            Lenguajes y Automátas I
+            Funciones y Expresiones Aritméticas
           </p>
+          <ul class="instructions-list">
+            <li>
+              <b>Funciones</b> con o sin tipos de retorno (void, string, int,
+              float).
+            </li>
+            <li><b>Funciones</b> con o sin parámetros.</li>
+            <li>
+              <b>Parámetros</b> con diferentes tipos de datos (string, int,
+              float).
+            </li>
+            <li>
+              <b>Identificadores</b> (solo letras, sin números ni carácteres
+              especiales).
+            </li>
+            <li>
+              Evitar el uso de delimitadores [ <b>{</b> ] [ <b>}</b> ] y [
+              <b>;</b> ].
+            </li>
+          </ul>
         </div>
         <div id="flow">
           <span class="flow-1"></span>
@@ -74,13 +93,13 @@
           <span class="flow-3"></span>
         </div>
 
-       <router-view></router-view>
+        <router-view></router-view>
       </div>
     </div>
 
     <footer class="footer">
       <div class="container">
-        <div class="content has-text-centered">
+        <div class="content has-text-left">
           <!-- <div class="soc">
             <a href="#"
               ><i class="fas fa-github fa-2x" aria-hidden="true"></i
@@ -95,12 +114,27 @@
               ><i class="fa fa-twitter fa-2x" aria-hidden="true"></i
             ></a>
           </div> -->
-          <p>
-            <strong>Compilador</strong> by
-            <a href="http://jgthms.com">Raul Novelo</a>. Todos los derechos reservados
-            <a href="http://opensource.org/licenses/mit-license.php">ITM</a>.
-            <br />
-          </p>
+          <h1 class="is-size-2 has-text-white">Acerca de</h1>
+          <ul>
+            <li>
+              Creado por <b>Raúl Novelo</b> & <b>Paul Mena</b>. Instituto
+              Tecnológico de Mérida / TecNM, 2020.
+            </li>
+            <li>
+              Analizador léxico para la materia de
+              <a
+                href="https://es.wikipedia.org/wiki/Teor%C3%ADa_de_aut%C3%B3matas"
+                target="_blank"
+                >Lenguajes y Automatas I</a
+              >.
+            </li>
+            <li>
+              Preguntas, sugerancias, o bugs, envie un e-mail a
+              <a href="mailto:raul.novelo@aaaimx.org">raul.novelo@aaaimx.org</a>
+              y/o
+              <a href="mailto:paul.mena@aaaimx.org">paul.mena@aaaimx.org</a>.
+            </li>
+          </ul>
         </div>
       </div>
     </footer>

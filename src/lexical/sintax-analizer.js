@@ -117,6 +117,7 @@ export function sintaxAnalyzer (input) {
       acc.push(DEL.gettok(line.lexemes[line.lexemes.length - 1], numline))
       TOKENS.push(acc)
     } else if (OPERANDS.test(line.code)) {
+      // aritmeticas
       const acc = []
       let arit = ''
       acc.push(...multitok([ID, AS], line.lexemes, numline))

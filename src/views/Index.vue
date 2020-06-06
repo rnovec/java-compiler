@@ -147,7 +147,7 @@ export default {
       fileName: '',
       encodedToken: '',
       tokensFile: '',
-      text: `\nvoid abc()\n a = ab + 112 + bb\na = ab + 1\n\nvoid int(int a)\n a = ab + 1\nvoid abc(int a, int b, int a)\n a = ab + 1`,
+      text: `void abc()\n a = ab + 1 + bb\n\nvo2id int(int a)\n a = ab + 1 / 2 * 4\n\nvoid abc(int a, int b, int a)\n a = b + c /* d`,
       isLoading: false,
       tokens: []
     }

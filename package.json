@@ -1,6 +1,6 @@
 {
   "name": "compiler",
-  "version": "1.0.0-beta",
+  "version": "1.0.0-alpha",
   "private": true,
   "description": "Compilador para la materia Lenguajes y Autómatas I",
   "author": "Raul Novelo Cruz <rnovelo.cruz98@gmail.com>",
