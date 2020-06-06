@@ -7,6 +7,7 @@
   "scripts": {
     "dev": "quasar dev -m electron -t mat",
     "build": "quasar build -m electron",
+    "publish": "quasar build -m spa && node publish.js",
     "build:win": "npm run build && npm run win32",
     "build:deb": "npm run build && npm run deb64",
     "win32": "electron-installer-windows --src dist/electron/SyntaxAnalyzer-win32-x64 --dest dist/installers --arch amd64 --config config.json",
@@ -27,6 +28,7 @@
     "electron-devtools-installer": "^2.2.4",
     "electron-installer-windows": "^3.0.0",
     "electron-packager": "^14.2.1",
+    "gh-pages": "^3.0.0",
     "quasar-pak": "0.0.2",
     "vue-cli-plugin-buefy": "^0.3.7"
   },
