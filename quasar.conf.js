@@ -157,7 +157,7 @@ module.exports = function (/* ctx */) {
 
       packager: {
         // https://github.com/electron-userland/electron-packager/blob/master/docs/api.md#options
-        executableName: 'compiler'
+        executableName: 'syntax-analyzer'
 
         // OS X / Mac App Store
         // appBundleId: '',
@@ -172,7 +172,7 @@ module.exports = function (/* ctx */) {
       builder: {
         // https://www.electron.build/configuration/configuration
 
-        appId: 'compiler'
+        appId: 'syntax-analyzer'
       },
 
       // More info: https://quasar.dev/quasar-cli/developing-electron-apps/node-integration

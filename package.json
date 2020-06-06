@@ -1,16 +1,16 @@
 {
-  "name": "compiler",
-  "version": "1.0.0-alpha",
+  "name": "syntax-analyzer",
+  "version": "1.0.0",
   "private": true,
-  "description": "Compilador para la materia Lenguajes y Autómatas I",
+  "description": "Analizador Léxico para la materia Lenguajes y Autómatas I",
   "author": "Raul Novelo Cruz <rnovelo.cruz98@gmail.com>",
   "scripts": {
     "dev": "quasar dev -m electron -t mat",
     "build": "quasar build -m electron",
     "build:win": "npm run build && npm run win32",
     "build:deb": "npm run build && npm run deb64",
-    "win32": "electron-installer-windows --src dist/electron/Compiler-win32-x64 --dest dist/installers --arch amd64 --config config.json",
-    "deb64": "electron-installer-debian --src ./dist/electron/Compiler-linux-x64/ --dest dist/installers/ --arch amd64 --config config.json"
+    "win32": "electron-installer-windows --src dist/electron/SyntaxAnalyzer-win32-x64 --dest dist/installers --arch amd64 --config config.json",
+    "deb64": "electron-installer-debian --src ./dist/electron/SyntaxAnalyzer-linux-x64/ --dest dist/installers/ --arch amd64 --config config.json"
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",
@@ -40,6 +40,6 @@
     "npm": ">= 6.13.4",
     "yarn": ">= 1.21.1"
   },
-  "executableName": "Compiler",
-  "productName": "Compiler"
+  "executableName": "SyntaxAnalyzer",
+  "productName": "SyntaxAnalyzer"
 }
