@@ -1,6 +1,184 @@
 <template>
   <div class="container">
     <div class="section">
+      <table class="table is-bordered is-striped is-narrow is-fullwidth">
+        <thead>
+          <tr>
+            <th>Tipo de instrucción</th>
+            <th>
+              <abbr title="Ejemplo de lexemas">Ejemplo de lexemas</abbr>
+            </th>
+            <th>Prefijo token</th>
+            <th>Contador</th>
+          </tr>
+        </thead>
+
+        <tbody id="yui_3_17_2_2_1592261207050_122">
+          <tr id="yui_3_17_2_2_1592261207050_121">
+            <td height="39">
+              <p>
+                <span>Tipos de datos</span>
+              </p>
+            </td>
+            <td>
+              int, string, float, void
+            </td>
+            <td>
+              <p>
+                <span>TD</span>
+              </p>
+            </td>
+            <td class="oa3">
+              <p>
+                <span>{{ counter['TD'] }}</span>
+              </p>
+            </td>
+          </tr>
+          <tr id="yui_3_17_2_2_1592261207050_132">
+            <td>
+              <p>
+                <span>Operadores aritméticos</span>
+              </p>
+            </td>
+            <td>
+              <p>
+                <span>+, -, *, /</span>
+              </p>
+            </td>
+            <td>
+              <p>
+                <span>OP</span>
+              </p>
+            </td>
+            <td>
+              <p>
+                <span>{{ counter['OP'] }}</span>
+              </p>
+            </td>
+          </tr>
+          <tr height="39">
+            <td height="39">
+              <p>
+                <span>Delimitadores</span>
+              </p>
+            </td>
+            <td>
+              <p>
+                <span>(, )</span>
+              </p>
+            </td>
+            <td>
+              <p>
+                DEL
+              </p>
+            </td>
+            <td>
+              <p>
+                <span>{{ counter['DEL'] }}</span>
+              </p>
+            </td>
+          </tr>
+          <tr height="39">
+            <td height="39">
+              <p>
+                <span>Misceláneos</span>
+              </p>
+            </td>
+            <td>
+              <p>
+                ,
+              </p>
+            </td>
+            <td>
+              <p>
+                <span>SEP</span>
+              </p>
+            </td>
+            <td>
+              <p>
+                <span
+                  ><span>{{ counter['SEP'] }}</span></span
+                >
+              </p>
+            </td>
+          </tr>
+          <tr height="39">
+            <td height="39">
+              <p>
+                <span>Identificadores</span>
+              </p>
+            </td>
+            <td>
+              <p>
+                <span
+                  >Variables, constantes, nombre de funciones, nombre de clases, </span
+                ><span>etc</span>
+              </p>
+            </td>
+            <td>
+              <p>
+                <span>ID</span>
+              </p>
+            </td>
+            <td>
+              <p>
+                <span
+                  ><span>{{ counter['ID'] }}</span></span
+                >
+              </p>
+            </td>
+          </tr>
+          <tr height="39">
+            <td height="39">
+              <p>
+                <span>Constantes numéricas</span>
+              </p>
+            </td>
+            <td>
+              <p>
+                <span>0, 1, 23, 7887</span>
+              </p>
+            </td>
+            <td>
+              <p>
+                <span>CNE</span>
+              </p>
+            </td>
+            <td>
+              <p>
+                <span
+                  ><span>{{ counter['CNE'] }}</span></span
+                >
+              </p>
+            </td>
+          </tr>
+          <tr height="39">
+            <td height="39">
+              <p>
+                <span>Operador asignación</span>
+              </p>
+            </td>
+            <td>
+              <p>
+                <span>=</span>
+              </p>
+            </td>
+            <td>
+              <p>
+                <span>AS</span>
+              </p>
+            </td>
+            <td>
+              <p>
+                <span
+                  ><span>{{ counter['AS'] }}</span></span
+                >
+              </p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
       <div class="box">
         <div class="field">
           <div class="control is-expanded">
@@ -57,66 +235,89 @@
         </div>
       </div>
       <!-- Developers -->
-      <div class="columns is-desktop">
+      <div v-if="text" class="columns is-desktop">
         <div class="column">
-          <h5>Tabla de simbolos</h5>
-          <table class="table">
-            <thead>
-              <tr>
-                <th>Lexema</th>
-                <th><abbr title="Token">Token</abbr></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(token, i) in symbols" :key="i">
-                <th>{{ token.lex }}</th>
-                <td>
-                  {{ token.token }}
-                </td>
-              </tr>
-            </tbody>
-          </table>
+          <div class="card">
+            <header class="card-header">
+              <h5 class="card-header-title">Tabla de símbolos</h5>
+            </header>
+            <div class="content">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Lexema</th>
+                    <th><abbr title="Token">Token</abbr></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(token, i) in symbolsTable" :key="i">
+                    <th>{{ i + 1 }}</th>
+                    <th>{{ token.lex }}</th>
+                    <td>
+                      {{ token.token }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
         <div class="column">
-          <h5>Tabla de errores</h5>
-          <table class="table">
-            <thead>
-              <tr>
-                <th><abbr title="Token Error">Token err</abbr></th>
-                <th><abbr title="Lexema">Lexema</abbr></th>
-                <th>Linea</th>
-                <th><abbr title="Descripción">Desc</abbr></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(token, i) in errors" :key="i">
-                <th>{{ token.token }}</th>
-                <td>
-                  {{ token.lex }}
-                </td>
-                <td>{{ token.line + 1 }}</td>
-                <td>
-                  {{ token.message }}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <div class="field" v-if="tokensFile">
-            <div class="control is-expanded">
-              <textarea
-                style="overflow:hidden"
-                v-autosize
-                class="textarea has-text-left"
-                :value="tokensFile"
-                disabled
-              >
-              </textarea>
+          <div class="card">
+            <header class="card-header">
+              <h5 class="card-header-title">Tabla de errores</h5>
+            </header>
+            <div class="content">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th><abbr title="Token Error">Token err</abbr></th>
+                    <th><abbr title="Lexema">Lexema</abbr></th>
+                    <th>Linea</th>
+                    <th><abbr title="Descripción">Desc</abbr></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(token, i) in errors" :key="i">
+                    <th>{{ token.token }}</th>
+                    <td>
+                      {{ token.lex }}
+                    </td>
+                    <td>{{ token.line + 1 }}</td>
+                    <td>
+                      {{ token.message }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-            <br />
-            <span>
-              Descargar
-              <a download="tokens.txt" :href="encodedToken"> tokens.txt</a>
-            </span>
+          </div>
+          <br />
+          <div class="card">
+            <header class="card-header">
+              <h5 class="card-header-title">Archivo de tokens</h5>
+            </header>
+            <div class="field" v-if="tokensFile">
+              <div class="control is-expanded">
+                <textarea
+                  style="overflow:hidden"
+                  v-autosize
+                  class="textarea has-text-left"
+                  :value="tokensFile"
+                  disabled
+                >
+                </textarea>
+              </div>
+              <footer class="card-footer">
+                <a
+                  :href="encodedToken"
+                  download="tokens.txt"
+                  class="card-footer-item"
+                  >Descargar tokens.txt</a
+                >
+              </footer>
+            </div>
           </div>
         </div>
       </div>
@@ -141,32 +342,49 @@ textarea {
 <script>
 import { getTokens, createTokensFile, getErrors } from '../lexical/main'
 export default {
-  name: 'IndexPage',
+  name: 'App',
   data () {
     return {
       fileName: '',
       encodedToken: '',
       tokensFile: '',
-      text: `void abc()\n a = ab + 1 + bb\n\nvo2id int(int a)\n a = ab + 1 / 2 * 4\n\nvoid abc(int a, int b, int a)\n a = b + c /* d`,
+      text: `void abc()\n a = ab + 1 + bb\n\nvo2id int(float a)\n a = ab + 1 / 2 * 4\n\nvoid d(int a, string b, int a)\n a = b + c /* d`,
       isLoading: false,
-      tokens: []
+      symbols: [],
+      counter: { TD: 0, ID: 0, CNE: 0, DEL: 0, AS: 0, OP: 0, SEP: 0 },
+      items: [
+        {
+          type: 'Tipos de datos',
+          examples: 'int, char, bool, etc',
+          prefix: 'TD',
+          counter: 0
+        },
+        {
+          type: 'Operadores aritméticos',
+          examples: 'int, char, bool, etc',
+          prefix: 'TD',
+          counter: 0
+        }
+      ]
     }
   },
   created () {
     this.compile()
   },
   computed: {
-    symbols () {
-      return this.tokens.filter(el => el.lex !== '\n' && !el.error)
+    symbolsTable () {
+      return this.symbols.filter(el => el.lex !== '\n' && !el.error)
     },
     errors () {
-      return this.tokens.filter(t => t.error)
+      return this.symbols.filter(t => t.error)
     }
   },
   methods: {
     compile () {
-      this.tokens = getTokens(this.text)
-      this.tokensFile = createTokensFile(this.tokens)
+      const { tokens, counters } = getTokens(this.text)
+      this.counter = counters
+      this.symbols = tokens.filter(t => t.first)
+      this.tokensFile = createTokensFile(tokens)
       this.encodedToken =
         'data:text/plain;charset=utf-8,' + encodeURIComponent(this.tokensFile)
     },
@@ -188,7 +406,7 @@ export default {
   },
   directives: {
     autosize: {
-      inserted: function (el)  {
+      inserted: function (el) {
         el.style.height = el.scrollHeight + 'px'
         el.style.overflow = 'hidden'
         el.style.resize = 'none'

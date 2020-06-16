@@ -1,62 +1,5 @@
 <template>
   <div>
-    <!-- <nav class="navbar is-dark">
-      <div class="container">
-        <div class="navbar-brand">
-          <a class="navbar-item is-size-2">
-            Analizador Léxico & Sintáctico
-          </a>
-          <span class="navbar-burger burger" data-target="navbarMenu">
-            <span></span>
-            <span></span>
-            <span></span>
-          </span>
-        </div>
-       <div id="navbarMenu" class="navbar-menu">
-          <div class="navbar-end">
-            <a class="navbar-item is-active">
-              Home
-            </a>
-            <a class="navbar-item">
-              Examples
-            </a>
-            <a class="navbar-item">
-              Features
-            </a>
-            <a class="navbar-item">
-              Team
-            </a>
-            <a class="navbar-item">
-              Archives
-            </a>
-            <a class="navbar-item">
-              Help
-            </a>
-            <div class="navbar-item has-dropdown is-hoverable">
-              <a class="navbar-link">
-                Account
-              </a>
-              <div class="navbar-dropdown">
-                <a class="navbar-item">
-                  Dashboard
-                </a>
-                <a class="navbar-item">
-                  Profile
-                </a>
-                <a class="navbar-item">
-                  Settings
-                </a>
-                <hr class="navbar-divider" />
-                <div class="navbar-item">
-                  Logout
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </nav> -->
-
     <div class="hero is-small has-text-centered is-dark is-bold">
       <div class="hero-body">
         <div class="container">
@@ -67,53 +10,19 @@
           <p class="subtitle">
             Funciones y Expresiones Aritméticas
           </p>
-          <ul class="instructions-list">
-            <li>
-              <b>Funciones</b> con o sin tipos de retorno (void, string, int,
-              float).
-            </li>
-            <li><b>Funciones</b> con o sin parámetros.</li>
-            <li>
-              <b>Parámetros</b> con diferentes tipos de datos (string, int,
-              float).
-            </li>
-            <li>
-              <b>Identificadores</b> (solo letras, sin números ni carácteres
-              especiales).
-            </li>
-            <li>
-              Evitar el uso de delimitadores [ <b>{</b> ] [ <b>}</b> ] y [
-              <b>;</b> ].
-            </li>
-          </ul>
+          <router-view></router-view>
         </div>
         <div id="flow">
           <span class="flow-1"></span>
           <span class="flow-2"></span>
           <span class="flow-3"></span>
         </div>
-
-        <router-view></router-view>
       </div>
     </div>
 
     <footer class="footer">
       <div class="container">
         <div class="content has-text-left">
-          <!-- <div class="soc">
-            <a href="#"
-              ><i class="fas fa-github fa-2x" aria-hidden="true"></i
-            ></a>
-            <a href="#"
-              ><i class="fa fa-youtube fa-2x" aria-hidden="true"></i
-            ></a>
-            <a href="#"
-              ><i class="fa fa-facebook fa-2x" aria-hidden="true"></i
-            ></a>
-            <a href="#"
-              ><i class="fa fa-twitter fa-2x" aria-hidden="true"></i
-            ></a>
-          </div> -->
           <h1 class="is-size-2 has-text-white">Acerca de</h1>
           <ul>
             <li>
@@ -129,7 +38,7 @@
               >.
             </li>
             <li>
-              Preguntas, sugerancias, o bugs, envie un e-mail a
+              Preguntas, sugerencias, o bugs, envie un e-mail a
               <a href="mailto:raul.novelo@aaaimx.org">raul.novelo@aaaimx.org</a>
               y/o
               <a href="mailto:paul.mena@aaaimx.org">paul.mena@aaaimx.org</a>.
@@ -140,7 +49,6 @@
     </footer>
   </div>
 </template>
-
 <style>
 body {
   background-color: #041221;
