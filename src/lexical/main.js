@@ -13,47 +13,52 @@ const OP = /([+]|[-]|[*]|[/])/
 const SEP = /,/
 
 /**
- * Complex parsers
- */
-const FULL_PATTERN = /(\w+\s(\w+)[(](([)]|\w+\s\w+|[,]\s\w+\s\w+)*[)])\n)(^(\s\s|\t)\w+\s[=]\s(\w+|\d+)(\s(\+|-|\*|\/)\s(\w+|\d+))*$)/gm
-
-const parsers = {
-  TD,
-  ID,
-  CNE,
-  DEL,
-  AS,
-  OP,
-  SEP
-}
-
-/**
  * Generate tokens from code string
  * @param {String} code
  */
 export function getTokens (code) {
-  const tokens = sintaxAnalyzer(code).flat()
-
-  // generate token ID with counter
-  for (const key in parsers) {
-    tokens
-      .filter(t => t.token === key)
-      .forEach((t, i, arr) => {
-        t.error ? arr[i].token = 'ERLX' + t.token + ++i : arr[i].token = t.token + ++i
-      })
+  let lexemes = []
+  let acc = {}
+  const counters = {
+    TD: 0,
+    ID: 0,
+    CNE: 0,
+    DEL: 0,
+    AS: 0,
+    OP: 0,
+    SEP: 0
   }
-  return tokens
+  let tokens = sintaxAnalyzer(code).flat()
+
+  tokens.forEach((t, i, arr) => {
+    if (lexemes.indexOf(t.lex) === -1) {
+      lexemes.push(t.lex)
+      arr[i].first = true
+      counters[t.token] += 1
+      arr[i].token = t.token + counters[t.token]
+      acc[t.lex] = arr[i].token
+    } else {
+      arr[i].token = acc[t.lex]
+    }
+    if (t.error) arr[i].token = 'ERLX' + arr[i].token
+  })
+
+  return {
+    tokens,
+    counters
+  }
 }
 
 /**
- * Generate single tokens string from tokens object
- * @param {Object} tokens
+ * Generate single tokens string from symbols object
+ * @param {Object} symbols
  */
-export function createTokensFile (tokens) {
+export function createTokensFile (symbols) {
   let tokensFile = ''
-  tokens.forEach(t => {
+  symbols.forEach(t => {
+    console.log(t.lex, t.token)
     if (t.lex === '\n') tokensFile += t.lex
     else tokensFile += t.token + ' '
   })
-  return tokensFile
+  return tokensFile.replace(/\n\n/g, '\n')
 }
