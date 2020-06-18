@@ -18,6 +18,7 @@ const SEP = /,/
  */
 export function getTokens (code) {
   let lexemes = []
+  let tokens = []
   let acc = {}
   const counters = {
     TD: 0,
@@ -28,20 +29,21 @@ export function getTokens (code) {
     OP: 0,
     SEP: 0
   }
-  let tokens = sintaxAnalyzer(code).flat()
-
-  tokens.forEach((t, i, arr) => {
-    if (lexemes.indexOf(t.lex) === -1) {
-      lexemes.push(t.lex)
-      arr[i].first = true
-      counters[t.token] += 1
-      arr[i].token = t.token + counters[t.token]
-      acc[t.lex] = arr[i].token
-    } else {
-      arr[i].token = acc[t.lex]
-    }
-    if (t.error) arr[i].token = 'ERLX' + arr[i].token
-  })
+  if (!/(;|:|{|}|\[|\]|\.|\?|¿|\$|#)/.test(code)) {
+    tokens = sintaxAnalyzer(code).flat()
+    tokens.forEach((t, i, arr) => {
+      if (lexemes.indexOf(t.lex) === -1) {
+        lexemes.push(t.lex)
+        arr[i].first = true
+        counters[t.token] += 1
+        arr[i].token = t.token + counters[t.token]
+        acc[t.lex] = arr[i].token
+      } else {
+        arr[i].token = acc[t.lex]
+      }
+      if (t.error) arr[i].token = 'ERLX' + arr[i].token
+    })
+  }
 
   return {
     tokens,

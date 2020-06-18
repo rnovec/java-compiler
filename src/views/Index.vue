@@ -20,9 +20,7 @@
                 <span>Tipos de datos</span>
               </p>
             </td>
-            <td>
-              int, string, float, void
-            </td>
+            <td>int, string, float, void</td>
             <td>
               <p>
                 <span>TD</span>
@@ -68,9 +66,7 @@
               </p>
             </td>
             <td>
-              <p>
-                DEL
-              </p>
+              <p>DEL</p>
             </td>
             <td>
               <p>
@@ -85,9 +81,7 @@
               </p>
             </td>
             <td>
-              <p>
-                ,
-              </p>
+              <p>,</p>
             </td>
             <td>
               <p>
@@ -96,9 +90,9 @@
             </td>
             <td>
               <p>
-                <span
-                  ><span>{{ counter['SEP'] }}</span></span
-                >
+                <span>
+                  <span>{{ counter['SEP'] }}</span>
+                </span>
               </p>
             </td>
           </tr>
@@ -110,9 +104,7 @@
             </td>
             <td>
               <p>
-                <span
-                  >Variables, constantes, nombre de funciones, nombre de clases, </span
-                ><span>etc</span>
+                <span>Variables y nombre de funciones</span>
               </p>
             </td>
             <td>
@@ -122,9 +114,9 @@
             </td>
             <td>
               <p>
-                <span
-                  ><span>{{ counter['ID'] }}</span></span
-                >
+                <span>
+                  <span>{{ counter['ID'] }}</span>
+                </span>
               </p>
             </td>
           </tr>
@@ -146,9 +138,9 @@
             </td>
             <td>
               <p>
-                <span
-                  ><span>{{ counter['CNE'] }}</span></span
-                >
+                <span>
+                  <span>{{ counter['CNE'] }}</span>
+                </span>
               </p>
             </td>
           </tr>
@@ -170,9 +162,9 @@
             </td>
             <td>
               <p>
-                <span
-                  ><span>{{ counter['AS'] }}</span></span
-                >
+                <span>
+                  <span>{{ counter['AS'] }}</span>
+                </span>
               </p>
             </td>
           </tr>
@@ -186,14 +178,14 @@
               style="overflow:hidden"
               v-autosize
               class="textarea has-text-left"
+              :class="{ 'is-danger': !match }"
               type="search"
               rows="7"
               v-model="text"
               @input="compile()"
               @change="compile()"
               placeholder="» » » enter your code « « «"
-            >
-            </textarea>
+            ></textarea>
           </div>
         </div>
 
@@ -212,13 +204,11 @@
                 <span class="file-icon">
                   <i class="fas fa-upload"></i>
                 </span>
-                <span class="file-label">
-                  Choose File...
-                </span>
+                <span class="file-label">Choose File...</span>
               </span>
-              <span class="file-name">
-                {{ fileName || 'No file uploaded' }}
-              </span>
+              <span class="file-name">{{
+                fileName || 'No file uploaded'
+              }}</span>
             </label>
           </div>
         </div>
@@ -229,13 +219,14 @@
               class="button is-dark is-medium is-fullwidth"
               :class="isLoading ? ' is-loading ' : ''"
             >
-              Verificar&nbsp;&nbsp;<i class="fas fa-check"></i>
+              Verificar&nbsp;&nbsp;
+              <i class="fas fa-check"></i>
             </button>
           </div>
         </div>
       </div>
       <!-- Developers -->
-      <div v-if="text" class="columns is-desktop">
+      <div v-if="text && match" class="columns is-desktop">
         <div class="column">
           <div class="card">
             <header class="card-header">
@@ -245,18 +236,16 @@
               <table class="table">
                 <thead>
                   <tr>
-                    <th>#</th>
                     <th>Lexema</th>
-                    <th><abbr title="Token">Token</abbr></th>
+                    <th>
+                      <abbr title="Token">Token</abbr>
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr v-for="(token, i) in symbolsTable" :key="i">
-                    <th>{{ i + 1 }}</th>
                     <th>{{ token.lex }}</th>
-                    <td>
-                      {{ token.token }}
-                    </td>
+                    <td>{{ token.token }}</td>
                   </tr>
                 </tbody>
               </table>
@@ -264,7 +253,7 @@
           </div>
         </div>
         <div class="column">
-          <div class="card">
+          <div v-if="errors.length" class="card" style="margin-bottom: 5%">
             <header class="card-header">
               <h5 class="card-header-title">Tabla de errores</h5>
             </header>
@@ -272,28 +261,30 @@
               <table class="table">
                 <thead>
                   <tr>
-                    <th><abbr title="Token Error">Token err</abbr></th>
-                    <th><abbr title="Lexema">Lexema</abbr></th>
+                    <th>
+                      <abbr title="Token Error">Token err</abbr>
+                    </th>
+                    <th>
+                      <abbr title="Lexema">Lexema</abbr>
+                    </th>
                     <th>Linea</th>
-                    <th><abbr title="Descripción">Desc</abbr></th>
+                    <th>
+                      <abbr title="Descripción">Desc</abbr>
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr v-for="(token, i) in errors" :key="i">
                     <th>{{ token.token }}</th>
-                    <td>
-                      {{ token.lex }}
-                    </td>
+                    <td>{{ token.lex }}</td>
                     <td>{{ token.line + 1 }}</td>
-                    <td>
-                      {{ token.message }}
-                    </td>
+                    <td>{{ token.message }}</td>
                   </tr>
                 </tbody>
               </table>
             </div>
           </div>
-          <br />
+          
           <div class="card">
             <header class="card-header">
               <h5 class="card-header-title">Archivo de tokens</h5>
@@ -306,8 +297,7 @@
                   class="textarea has-text-left"
                   :value="tokensFile"
                   disabled
-                >
-                </textarea>
+                ></textarea>
               </div>
               <footer class="card-footer">
                 <a
@@ -352,20 +342,7 @@ export default {
       isLoading: false,
       symbols: [],
       counter: { TD: 0, ID: 0, CNE: 0, DEL: 0, AS: 0, OP: 0, SEP: 0 },
-      items: [
-        {
-          type: 'Tipos de datos',
-          examples: 'int, char, bool, etc',
-          prefix: 'TD',
-          counter: 0
-        },
-        {
-          type: 'Operadores aritméticos',
-          examples: 'int, char, bool, etc',
-          prefix: 'TD',
-          counter: 0
-        }
-      ]
+      match: true
     }
   },
   created () {
@@ -382,11 +359,15 @@ export default {
   methods: {
     compile () {
       const { tokens, counters } = getTokens(this.text)
-      this.counter = counters
-      this.symbols = tokens.filter(t => t.first)
-      this.tokensFile = createTokensFile(tokens)
-      this.encodedToken =
-        'data:text/plain;charset=utf-8,' + encodeURIComponent(this.tokensFile)
+      if (!tokens.length) this.match = false
+      else {
+        this.match = true
+        this.counter = counters
+        this.symbols = tokens.filter(t => t.first)
+        this.tokensFile = createTokensFile(tokens)
+        this.encodedToken =
+          'data:text/plain;charset=utf-8,' + encodeURIComponent(this.tokensFile)
+      }
     },
     selectedFile () {
       let file = this.$refs.myFile.files[0]
