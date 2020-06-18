@@ -7,34 +7,15 @@ Análizador léxico y sintáctico correspondiente a la materia de Lenguajes y Au
 ├── layouts
 ├── lexical
 │ ├── main.js
-│ ├── regex-tree.js
-│ └── tokenizer.js
+│ ├── sintax-analyzer.js
 └── views
 │ └── Index.vue
 └── App.vue
 
 /resources
-└── compiler_0.0.1_amd64.deb
-
+└── syntax_analyzer-1.2.0-setup.exe
 README.md
-
 ```
 
-## Install the dependencies
-```bash
-npm install
-```
-
-### Start the app in development mode (hot-code reloading, error reporting, etc.)
-```bash
-quasar dev
-```
-sudo apt-get install fakeroot
-
-### Build the app for production
-```bash
-quasar build
-```
-
-### Customize the configuration
-See [Configuring quasar.conf.js](https://quasar.dev/quasar-cli/quasar-conf-js).
+### Version Online
+[Analizador Léxico y Sintáctico](https://rnovec.github.io/compilador/).

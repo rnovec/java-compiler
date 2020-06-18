@@ -6,6 +6,7 @@
   "author": "Raul Novelo Cruz <rnovelo.cruz98@gmail.com>",
   "scripts": {
     "dev": "quasar dev -m electron -t mat -p 8081",
+    "spa": "quasar dev -m spa -p 8081",
     "build": "quasar build -m electron",
     "publish": "quasar build -m spa && node publish.js",
     "build:win": "npm run build && npm run win32",
