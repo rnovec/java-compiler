@@ -73,7 +73,7 @@ function splitter (code) {
       q.push(lex)
       q.push(code[i])
       lex = ''
-    } else if (/\s/.test(code[i])) {
+    } else if (/\s+/.test(code[i])) {
       q.push(lex)
       lex = ''
     } else {

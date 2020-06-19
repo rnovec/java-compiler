@@ -32,16 +32,19 @@ export function getTokens (code) {
   if (!/(;|:|{|}|\[|\]|\.|\?|¿|\$|#)/.test(code)) {
     tokens = sintaxAnalyzer(code).flat()
     tokens.forEach((t, i, arr) => {
-      if (lexemes.indexOf(t.lex) === -1) {
-        lexemes.push(t.lex)
-        arr[i].first = true
-        counters[t.token] += 1
-        arr[i].token = t.token + counters[t.token]
-        acc[t.lex] = arr[i].token
-      } else {
-        arr[i].token = acc[t.lex]
+      console.log(t.lex)
+      if (t.lex.length) {
+        if (lexemes.indexOf(t.lex) === -1) {
+          lexemes.push(t.lex)
+          arr[i].first = true
+          counters[t.token] += 1
+          arr[i].token = t.token + counters[t.token]
+          acc[t.lex] = arr[i].token
+        } else {
+          arr[i].token = acc[t.lex]
+        }
+        if (t.error) arr[i].token = 'ERLX' + arr[i].token
       }
-      if (t.error) arr[i].token = 'ERLX' + arr[i].token
     })
   }
 
@@ -58,7 +61,6 @@ export function getTokens (code) {
 export function createTokensFile (symbols) {
   let tokensFile = ''
   symbols.forEach(t => {
-    console.log(t.lex, t.token)
     if (t.lex === '\n') tokensFile += t.lex
     else tokensFile += t.token + ' '
   })

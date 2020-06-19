@@ -284,7 +284,7 @@
               </table>
             </div>
           </div>
-          
+
           <div class="card">
             <header class="card-header">
               <h5 class="card-header-title">Archivo de tokens</h5>
