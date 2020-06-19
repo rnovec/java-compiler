@@ -49,6 +49,7 @@
     </footer>
   </div>
 </template>
+
 <style>
 body {
   background-color: #041221;
