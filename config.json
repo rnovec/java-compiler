@@ -1,7 +1,0 @@
-{
-  "dest": "dist/installers/",
-  "executableName": "syntax-analyzer",
-  "tags": [
-    "Syntax Analyzer"
-  ]
-}
