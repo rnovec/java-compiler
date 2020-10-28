@@ -4,7 +4,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/java-compiler/css/app.c07cc864.css"
   },
   {
-    "revision": "728d51dedd003e626e574f24747ee938",
+    "revision": "31bde17aa965342515ff0cc98546d344",
     "url": "/java-compiler/index.html"
   },
   {
@@ -16,7 +16,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/java-compiler/js/chunk-vendors-legacy.97f4a323.js"
   },
   {
-    "revision": "ae19eb2f162f1def19d584484a528095",
+    "revision": "e384563757a69bba7e787571ac108841",
     "url": "/java-compiler/manifest.json"
   }
 ]);

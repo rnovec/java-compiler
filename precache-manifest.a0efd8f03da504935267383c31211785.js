@@ -4,6 +4,10 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/java-compiler/bulma.min.css"
   },
   {
+    "revision": "3422dc76a8acb770eb0f84b5c7c33ec2",
+    "url": "/java-compiler/console.svg"
+  },
+  {
     "revision": "1ebce4e2c5416e320db5",
     "url": "/java-compiler/css/app.c07cc864.css"
   },
@@ -12,7 +16,11 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/java-compiler/favicon.svg"
   },
   {
-    "revision": "c2001819eb6f08e158bf2f39aadca820",
+    "revision": "d08022eee77c0895dca190868ada0b36",
+    "url": "/java-compiler/favicon2.svg"
+  },
+  {
+    "revision": "a899e5669c6b35067059ebf6028fb351",
     "url": "/java-compiler/index.html"
   },
   {
@@ -24,7 +32,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/java-compiler/js/chunk-vendors.2843d7cc.js"
   },
   {
-    "revision": "ae19eb2f162f1def19d584484a528095",
+    "revision": "e384563757a69bba7e787571ac108841",
     "url": "/java-compiler/manifest.json"
   },
   {
