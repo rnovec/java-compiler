@@ -8,7 +8,11 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/java-compiler/css/app.c07cc864.css"
   },
   {
-    "revision": "8864652520eb4bae305e3a12dd809f3a",
+    "revision": "db5d2b474427c55f83a6a5eeb74aae43",
+    "url": "/java-compiler/favicon.svg"
+  },
+  {
+    "revision": "5be87b75c1c8705b53d2b21f94f45ae7",
     "url": "/java-compiler/index.html"
   },
   {
