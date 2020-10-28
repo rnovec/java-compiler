@@ -11,7 +11,7 @@
                 class="textarea has-text-left"
                 :class="{ 'is-danger': !match }"
                 type="search"
-                rows="10"
+                rows="13"
                 v-model="text"
                 @input="submit()"
                 @change="submit()"
@@ -19,7 +19,6 @@
               ></textarea>
             </div>
           </div>
-
           <div class="field">
             <div id="file" class="file has-name">
               <label class="file-label">
@@ -100,6 +99,30 @@
             </table>
           </div>
         </div>
+        <div class="card">
+          <header class="card-header">
+            <h5 class="card-header-title">Archivo de tokens</h5>
+          </header>
+          <div class="field" v-if="tokensFile">
+            <div class="control is-expanded">
+              <textarea
+                style="overflow:hidden"
+                v-autosize
+                class="textarea has-text-left"
+                :value="tokensFile"
+                disabled
+              ></textarea>
+            </div>
+            <footer class="card-footer">
+              <a
+                :href="encodedToken"
+                download="tokens.txt"
+                class="card-footer-item"
+                >Descargar tokens.txt</a
+              >
+            </footer>
+          </div>
+        </div>
       </div>
     </div>
     <!-- Developers -->
@@ -136,26 +159,31 @@
       <div class="column">
         <div class="card">
           <header class="card-header">
-            <h5 class="card-header-title">Archivo de tokens</h5>
+            <h5 class="card-header-title">
+              <i class="fas fa-table"></i>Triplos
+            </h5>
           </header>
-          <div class="field" v-if="tokensFile">
-            <div class="control is-expanded">
-              <textarea
-                style="overflow:hidden"
-                v-autosize
-                class="textarea has-text-left"
-                :value="tokensFile"
-                disabled
-              ></textarea>
-            </div>
-            <footer class="card-footer">
-              <a
-                :href="encodedToken"
-                download="tokens.txt"
-                class="card-footer-item"
-                >Descargar tokens.txt</a
-              >
-            </footer>
+          <div class="content">
+            <table class="table" v-for="table in taddc">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Dato Objeto</th>
+                  <th>Fuente</th>
+                  <th>
+                    <abbr title="Type">Operador</abbr>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(row, i) in table">
+                  <th>{{ i + 1 }}</th>
+                  <td>{{ row.obj }}</td>
+                  <td>{{ row.fuente }}</td>
+                  <td>{{ row.op }}</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
@@ -201,7 +229,7 @@ export default {
     this.submit()
   },
   computed: {
-    ...mapState(['symbolTable', 'errors', 'semerrors'])
+    ...mapState(['symbolTable', 'errors', 'semerrors', 'taddc'])
   },
   methods: {
     async submit () {
