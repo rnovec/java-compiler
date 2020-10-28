@@ -1,0 +1,10 @@
+{
+    "dest": "dist_electron/installers/",
+    "version": "2.0.0-beta",
+    "description": "Compiler for Java",
+    "icon": "src_electron/icon.png",
+    "executableName": "java-compiler",
+    "tags": [
+        "Programming"
+    ]
+}

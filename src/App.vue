@@ -2,22 +2,21 @@
   <div>
     <div class="hero is-small has-text-centered is-dark is-bold">
       <div class="hero-body">
-        <div class="container">
-          <br />
-          <p class="title is-size-1">
-            Analizador Léxico & Sintáctico
-          </p>
-          <p class="subtitle">
-            Funciones y Expresiones Aritméticas
-          </p>
-          <router-view></router-view>
-        </div>
-        <!-- <div id="flow">
+        <br />
+        <p class="title is-size-1">
+          Compilador para la materia <br> Lenguajes y Autómatas II
+        </p>
+        <p class="subtitle">
+          Funciones, Expresiones Aritméticas y Secuencias Iterativas
+        </p>
+      </div>
+      <router-view></router-view>
+
+      <!-- <div id="flow">
           <span class="flow-1"></span>
           <span class="flow-2"></span>
           <span class="flow-3"></span>
         </div> -->
-      </div>
     </div>
 
     <footer class="footer">
@@ -26,7 +25,7 @@
           <h1 class="is-size-2 has-text-white">Acerca de</h1>
           <ul>
             <li>
-              Creado por <b>Raúl Novelo</b> & <b>Paul Mena</b>. Instituto
+              Creado por <b>Raúl Novelo</b>, <b>Fernando Herrera</b> & <b>Paul Mena</b>. Instituto
               Tecnológico de Mérida / TecNM, 2020.
             </li>
             <li>
@@ -34,7 +33,7 @@
               <a
                 href="https://es.wikipedia.org/wiki/Teor%C3%ADa_de_aut%C3%B3matas"
                 target="_blank"
-                >Lenguajes y Automatas I</a
+                >Lenguajes y Automatas I & II</a
               >.
             </li>
             <li>

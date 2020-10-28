@@ -1,159 +1,166 @@
 <template>
-  <div class="container">
-    <div class="section">
-      <div class="box">
-        <div class="field">
-          <div class="control is-expanded">
-            <textarea
-              style="overflow:hidden"
-              v-autosize
-              class="textarea has-text-left"
-              :class="{ 'is-danger': !match }"
-              type="search"
-              rows="15"
-              v-model="text"
-              @input="submit()"
-              @change="submit()"
-              placeholder="» » » enter your code « « «"
-            ></textarea>
+  <div class="section">
+    <div class="columns is-desktop">
+      <div class="column">
+        <div class="box">
+          <div class="field">
+            <div class="control is-expanded">
+              <textarea
+                style="overflow:hidden"
+                v-autosize
+                class="textarea has-text-left"
+                :class="{ 'is-danger': !match }"
+                type="search"
+                rows="10"
+                v-model="text"
+                @input="submit()"
+                @change="submit()"
+                placeholder="» » » enter your code « « «"
+              ></textarea>
+            </div>
           </div>
-        </div>
 
-        <div class="field">
-          <div id="file" class="file has-name">
-            <label class="file-label">
-              <input
-                class="file-input"
-                type="file"
-                ref="myFile"
-                accept="text/plain"
-                name="resume"
-                @change="selectedFile(), submit()"
-              />
-              <span class="file-cta">
-                <span class="file-icon">
-                  <i class="fas fa-upload"></i>
+          <div class="field">
+            <div id="file" class="file has-name">
+              <label class="file-label">
+                <input
+                  class="file-input"
+                  type="file"
+                  ref="myFile"
+                  accept="text/plain"
+                  name="resume"
+                  @change="selectedFile(), submit()"
+                />
+                <span class="file-cta">
+                  <span class="file-icon">
+                    <i class="fas fa-upload"></i>
+                  </span>
+                  <span class="file-label">Choose File...</span>
                 </span>
-                <span class="file-label">Choose File...</span>
-              </span>
-              <span class="file-name">{{
-                fileName || 'No file uploaded'
-              }}</span>
-            </label>
-          </div>
-        </div>
-        <div class="field">
-          <div class="control is-expanded">
-            <button
-              @click="submit()"
-              class="button is-dark is-medium is-fullwidth"
-              :class="isLoading ? ' is-loading ' : ''"
-            >
-              Compilar<i class="fas fa-cogs"></i>
-            </button>
-          </div>
-        </div>
-      </div>
-      <!-- Developers -->
-      <div v-if="text && match" class="columns is-desktop">
-        <div class="column">
-          <div class="card">
-            <header class="card-header">
-              <h5 class="card-header-title">
-                <i class="fas fa-table"></i>Tabla de símbolos
-              </h5>
-            </header>
-            <div class="content">
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th>LEX</th>
-                    <th>TOKEN</th>
-                    <th>
-                      <abbr title="Type">Type</abbr>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="(token, i) in symbolTable" :key="i">
-                    <th>{{ token.value }}</th>
-                    <td>{{ token.type }}</td>
-                    <td>{{ token.vartype }}</td>
-                  </tr>
-                </tbody>
-              </table>
+                <span class="file-name">{{
+                  fileName || 'No file uploaded'
+                }}</span>
+              </label>
             </div>
           </div>
-        </div>
-        <div class="column">
-          <div v-if="errors.length || semerrors.length" class="card" style="margin-bottom: 5%">
-            <header class="card-header">
-              <h5 class="card-header-title">
-                <i class="fas fa-bug"></i>Tabla de errores
-              </h5>
-            </header>
-            <div class="content">
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th>
-                      <abbr title="Token Error">ERR</abbr>
-                    </th>
-                    <th>
-                      <abbr title="Lexema">LEX</abbr>
-                    </th>
-                    <th>LINEA</th>
-                    <th>
-                      <abbr title="Descripción">DESC</abbr>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="(err, i) in semerrors">
-                    <th>{{ err.type }}{{ i+1 }}</th>
-                    <td>{{ err.value }}</td>
-                    <td>{{ err.line }}</td>
-                    <td>{{ err.desc }}</td>
-                  </tr>
-                  <tr v-for="(err, i) in errors">
-                    <th>{{ err.type }}</th>
-                    <td>{{ err.value }}</td>
-                    <td>{{ err.line }}</td>
-                    <td>{{ err.desc }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <div class="card">
-            <header class="card-header">
-              <h5 class="card-header-title">Archivo de tokens</h5>
-            </header>
-            <div class="field" v-if="tokensFile">
-              <div class="control is-expanded">
-                <textarea
-                  style="overflow:hidden"
-                  v-autosize
-                  class="textarea has-text-left"
-                  :value="tokensFile"
-                  disabled
-                ></textarea>
-              </div>
-              <footer class="card-footer">
-                <a
-                  :href="encodedToken"
-                  download="tokens.txt"
-                  class="card-footer-item"
-                  >Descargar tokens.txt</a
-                >
-              </footer>
+          <div class="field">
+            <div class="control is-expanded">
+              <button
+                @click="submit()"
+                class="button is-dark is-medium is-fullwidth"
+                :class="isLoading ? ' is-loading ' : ''"
+              >
+                Compilar<i class="fas fa-cogs"></i>
+              </button>
             </div>
           </div>
         </div>
       </div>
-      <!-- End Developers -->
+      <div class="column">
+        <div
+          v-if="errors.length || semerrors.length"
+          class="card"
+          style="margin-bottom: 5%"
+        >
+          <header class="card-header">
+            <h5 class="card-header-title">
+              <i class="fas fa-bug"></i>Tabla de errores
+            </h5>
+          </header>
+          <div class="content">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>
+                    <abbr title="Token Error">ERR</abbr>
+                  </th>
+                  <th>
+                    <abbr title="Lexema">LEX</abbr>
+                  </th>
+                  <th>LINEA</th>
+                  <th>
+                    <abbr title="Descripción">DESC</abbr>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(err, i) in semerrors">
+                  <th>{{ err.type }}{{ i + 1 }}</th>
+                  <td>{{ err.value }}</td>
+                  <td>{{ err.line }}</td>
+                  <td>{{ err.desc }}</td>
+                </tr>
+                <tr v-for="(err, i) in errors">
+                  <th>{{ err.type }}</th>
+                  <td>{{ err.value }}</td>
+                  <td>{{ err.line }}</td>
+                  <td>{{ err.desc }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
+    <!-- Developers -->
+    <div v-if="text && match" class="columns is-desktop">
+      <div class="column">
+        <div class="card">
+          <header class="card-header">
+            <h5 class="card-header-title">
+              <i class="fas fa-table"></i>Tabla de símbolos
+            </h5>
+          </header>
+          <div class="content">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>LEX</th>
+                  <th>TOKEN</th>
+                  <th>
+                    <abbr title="Type">Type</abbr>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(token, i) in symbolTable" :key="i">
+                  <th>{{ token.value }}</th>
+                  <td>{{ token.type }}</td>
+                  <td>{{ token.vartype }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="column">
+        <div class="card">
+          <header class="card-header">
+            <h5 class="card-header-title">Archivo de tokens</h5>
+          </header>
+          <div class="field" v-if="tokensFile">
+            <div class="control is-expanded">
+              <textarea
+                style="overflow:hidden"
+                v-autosize
+                class="textarea has-text-left"
+                :value="tokensFile"
+                disabled
+              ></textarea>
+            </div>
+            <footer class="card-footer">
+              <a
+                :href="encodedToken"
+                download="tokens.txt"
+                class="card-footer-item"
+                >Descargar tokens.txt</a
+              >
+            </footer>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End Developers -->
   </div>
 </template>
 
@@ -234,7 +241,7 @@ export default {
   },
   directives: {
     autosize: {
-      inserted: function (el) {
+      inserted (el) {
         el.style.height = el.scrollHeight + 'px'
         el.style.overflow = 'hidden'
         el.style.resize = 'none'
