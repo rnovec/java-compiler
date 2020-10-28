@@ -10,7 +10,7 @@
               class="textarea has-text-left"
               :class="{ 'is-danger': !match }"
               type="search"
-              rows="7"
+              rows="15"
               v-model="text"
               @input="submit()"
               @change="submit()"
@@ -109,13 +109,13 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="(err, i) in semerrors" :key="i">
+                  <tr v-for="(err, i) in semerrors">
                     <th>{{ err.type }}{{ i+1 }}</th>
                     <td>{{ err.value }}</td>
                     <td>{{ err.line }}</td>
                     <td>{{ err.desc }}</td>
                   </tr>
-                  <tr v-for="(err, i) in errors" :key="i">
+                  <tr v-for="(err, i) in errors">
                     <th>{{ err.type }}</th>
                     <td>{{ err.value }}</td>
                     <td>{{ err.line }}</td>
@@ -184,7 +184,7 @@ export default {
       fileName: '',
       encodedToken: '',
       tokensFile: '',
-      text: `void prueba1 () { a = a + b * 5; while ( a < b) { a = a * 5; }}`,
+      text: `void prueba1 () {\n\tint a = a + b * 5;\n\twhile ( a < b) {\n\t\t a = a * 5; \n\t}\n}`,
       isLoading: false,
       symbols: [],
       match: true

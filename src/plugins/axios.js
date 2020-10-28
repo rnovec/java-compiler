@@ -2,7 +2,7 @@ import axios from 'axios'
 
 const instance = axios.create({
   baseURL:
-    process.env.NODE_ENV !== 'development'
+    process.env.NODE_ENV === 'development'
       ? 'http://localhost:8000'
       : 'https://compiler-api.herokuapp.com',
   timeout: 20000,
