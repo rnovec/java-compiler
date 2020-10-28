@@ -1,1 +1,1 @@
-{"name":"Java Compiler","short_name":"Java Compiler","theme_color":"#fff","icons":[{"src":"./img/icons/favicon2.svg","sizes":"192x192","type":"image/png"}],"start_url":"./index.html","display":"standalone","background_color":"#fff"}
+{"name":"Java Compiler","short_name":"Java Compiler","theme_color":"#fff","icons":[{"src":"./img/icons/android-chrome-60x60","sizes":"60x60","type":"image/png"},{"src":"./img/icons/android-chrome-192x192.png","sizes":"192x192","type":"image/png"}],"start_url":"./index.html","display":"standalone","background_color":"#fff"}
