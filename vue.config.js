@@ -24,5 +24,13 @@ module.exports = {
       warnings: false,
       errors: true
     }
-  }
+  },
+  chainWebpack: config => {
+    config.module
+      .rule('raw')
+      .test(/\.java$/)
+      .use('raw-loader')
+      .loader('raw-loader')
+      .end()
+  },
 }

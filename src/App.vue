@@ -4,10 +4,11 @@
       <div class="hero-body">
         <br />
         <p class="title is-size-1">
-          Compilador para la materia <br> Lenguajes y Autómatas II
+          Lenguajes y Autómatas II
         </p>
         <p class="subtitle">
-          Funciones, Expresiones Aritméticas y Secuencias Iterativas
+          Compilador de Expresiones Aritméticas, <br />
+          Funciones y Secuencias Iterativas
         </p>
       </div>
       <router-view></router-view>
@@ -22,14 +23,14 @@
     <footer class="footer">
       <div class="container">
         <div class="content has-text-left">
-          <h1 class="is-size-2 has-text-white">Acerca de</h1>
+          <h1 class="is-size-2 has-text-white">Acerca del Proyecto</h1>
           <ul>
             <li>
-              Creado por <b>Raúl Novelo</b>, <b>Fernando Herrera</b> & <b>Paul Mena</b>. Instituto
-              Tecnológico de Mérida / TecNM, 2020.
+              Creado por <b>Raúl Novelo</b>, <b>Fernando Herrera</b> &
+              <b>Paul Mena</b>. Instituto Tecnológico de Mérida / TecNM, 2020.
             </li>
             <li>
-              Analizador léxico para la materia de
+              Compilador del lenguaje <b>Java</b> para la materia de
               <a
                 href="https://es.wikipedia.org/wiki/Teor%C3%ADa_de_aut%C3%B3matas"
                 target="_blank"
@@ -43,6 +44,51 @@
               <a href="mailto:paul.mena@aaaimx.org">paul.mena@aaaimx.org</a>.
             </li>
           </ul>
+        </div>
+        <div class="container">
+          <div class="field">
+            <!---->
+            <div class="field-body">
+              <div class="field has-addons">
+                <!---->
+                <p class="control">
+                  <a
+                    href="https://github.com/rnovec/ply-compiler-java"
+                    target="_blank"
+                    class="button is-small"
+                    ><span class="icon"
+                      ><i class="mdi mdi-github-circle"></i></span
+                    ><span>ply-java-compiler</span></a
+                  >
+                </p>
+                <p class="control">
+                  <a
+                    href="https://github.com/rnovec/ply-compiler-java/blob/master/README.md"
+                    target="_blank"
+                    class="button is-small"
+                    ><span class="icon"
+                      ><i class="mdi mdi-file-document"></i></span
+                    ><span>Docs</span></a
+                  >
+                </p>
+                <p class="control">
+                  <a
+                    href="https://github.com/rnovec/java-compiler/releases/tag/v2.0.0-beta"
+                    target="_blank"
+                    class="button is-small"
+                    ><span class="icon"><i class="mdi mdi-download"></i></span
+                    ><span>Desktop version</span></a
+                  >
+                </p>
+                <!---->
+              </div>
+            </div>
+            <!---->
+          </div>
+          <small>
+            This site is powered by
+            <a href="https://pages.github.com/">Github Pages</a></small
+          >
         </div>
       </div>
     </footer>
