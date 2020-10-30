@@ -18,4 +18,4 @@ README.md
 ```
 
 ### Version Online
-[Analizador Léxico y Sintáctico](https://rnovec.github.io/compilador/).
+[Analizador Léxico y Sintáctico](https://rnovec.github.io/java-compiler).

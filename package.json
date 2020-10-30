@@ -13,7 +13,6 @@
     "postuninstall": "electron-builder install-app-deps",
     "deb64": "electron-installer-debian --src ./dist_electron/linux-unpacked/ --dest dist_electron/installers/ --arch amd64 --config src_electron/config.json",
     "pack:debian": "npm run electron:build && npm run deb64"
-  
   },
   "main": "background.js",
   "dependencies": {
@@ -37,6 +36,7 @@
     "electron-devtools-installer": "^3.1.0",
     "gh-pages": "^3.1.0",
     "node-sass": "^4.12.0",
+    "raw-loader": "^4.0.2",
     "sass-loader": "^8.0.2",
     "vue-cli-plugin-axios": "0.0.4",
     "vue-cli-plugin-buefy": "~0.3.7",

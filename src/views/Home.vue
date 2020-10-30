@@ -1,26 +1,35 @@
 <template>
   <div class="section">
-    <div class="columns is-desktop">
-      <div class="column">
+    <div class="columns is-desktop is-centered">
+      <div class="column is-half-desktop">
         <div class="box">
+          <div class="tags is-centered">
+            <span
+              v-for="name in Object.keys(examples)"
+              :key="name"
+              class="tag is-dark"
+              ><a class="has-text-white" href="#" @click="loadFile(name)"
+                >{{ name }}.java</a
+              ></span
+            >
+          </div>
+
           <div class="field">
             <div class="control is-expanded">
               <textarea
                 style="overflow:hidden"
-                v-autosize
                 class="textarea has-text-left"
                 :class="{ 'is-danger': !match }"
                 type="search"
-                rows="13"
+                :rows="textLines <= 5 ? 5 : textLines"
                 v-model="text"
-                @input="submit()"
                 @change="submit()"
                 placeholder="» » » enter your code « « «"
               ></textarea>
             </div>
           </div>
           <div class="field">
-            <div id="file" class="file has-name">
+            <div id="file" class="file has-name is-expanded">
               <label class="file-label">
                 <input
                   class="file-input"
@@ -54,13 +63,39 @@
             </div>
           </div>
         </div>
+        <div class="card" v-if="symbolTable.length">
+          <header class="card-header">
+            <h3 class="card-header-title">
+              <i class="fas fa-table"></i>Tabla de símbolos
+            </h3>
+          </header>
+          <div class="content">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>LEX</th>
+                  <th>TOKEN</th>
+                  <th>
+                    <abbr title="Type">Type</abbr>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(token, i) in symbolTable" :key="i">
+                  <th>{{ token.value }}</th>
+                  <td>{{ token.type }}</td>
+                  <td>{{ token.vartype }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
-      <div class="column">
-        <div
-          v-if="errors.length || semerrors.length"
-          class="card"
-          style="margin-bottom: 5%"
-        >
+      <div
+        class="column"
+        v-if="errors.length || semerrors.length || tokensFile"
+      >
+        <div v-if="errors.length || semerrors.length" class="card">
           <header class="card-header">
             <h5 class="card-header-title">
               <i class="fas fa-bug"></i>Tabla de errores
@@ -99,15 +134,15 @@
             </table>
           </div>
         </div>
-        <div class="card">
+        <div class="card" v-if="tokensFile">
           <header class="card-header">
             <h5 class="card-header-title">Archivo de tokens</h5>
           </header>
-          <div class="field" v-if="tokensFile">
+          <div class="field">
             <div class="control is-expanded">
               <textarea
                 style="overflow:hidden"
-                v-autosize
+                :rows="tokensLines"
                 class="textarea has-text-left"
                 :value="tokensFile"
                 disabled
@@ -123,41 +158,7 @@
             </footer>
           </div>
         </div>
-      </div>
-    </div>
-    <!-- Developers -->
-    <div v-if="text && match" class="columns is-desktop">
-      <div class="column">
-        <div class="card">
-          <header class="card-header">
-            <h5 class="card-header-title">
-              <i class="fas fa-table"></i>Tabla de símbolos
-            </h5>
-          </header>
-          <div class="content">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th>LEX</th>
-                  <th>TOKEN</th>
-                  <th>
-                    <abbr title="Type">Type</abbr>
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="(token, i) in symbolTable" :key="i">
-                  <th>{{ token.value }}</th>
-                  <td>{{ token.type }}</td>
-                  <td>{{ token.vartype }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-      <div class="column">
-        <div class="card">
+        <div class="card" v-if="taddc.length">
           <header class="card-header">
             <h5 class="card-header-title">
               <i class="fas fa-table"></i>Triplos
@@ -188,13 +189,19 @@
         </div>
       </div>
     </div>
-    <!-- End Developers -->
   </div>
 </template>
 
 <style scoped>
+.tags:not(:last-child) {
+  margin-bottom: 0rem;
+}
+
 svg {
   margin: 0 5px !important;
+}
+.card {
+  margin-bottom: 5%;
 }
 textarea {
   background: url('http://i.imgur.com/2cOaJ.png');
@@ -211,6 +218,10 @@ textarea {
 <script>
 import { compile } from '@/api/java'
 import { mapState } from 'vuex'
+import ejemplo1 from '@/examples/ejemplo1.java'
+import ejemplo2 from '@/examples/ejemplo2.java'
+import ejemplo3 from '@/examples/ejemplo3.java'
+import ejemplo4 from '@/examples/ejemplo4.java'
 
 export default {
   name: 'App',
@@ -219,9 +230,14 @@ export default {
       fileName: '',
       encodedToken: '',
       tokensFile: '',
-      text: `void prueba1 () {\n\tint a = a + b * 5;\n\twhile ( a < b) {\n\t\t a = a * 5; \n\t}\n}`,
+      text: '',
       isLoading: false,
-      symbols: [],
+      examples: {
+        ejemplo1,
+        ejemplo2,
+        ejemplo3,
+        ejemplo4
+      },
       match: true
     }
   },
@@ -229,19 +245,30 @@ export default {
     this.submit()
   },
   computed: {
-    ...mapState(['symbolTable', 'errors', 'semerrors', 'taddc'])
+    ...mapState(['symbolTable', 'errors', 'semerrors', 'taddc']),
+    textLines () {
+      return this.text.split(/\r\n|\r|\n/).length
+    },
+    tokensLines () {
+      return this.tokensFile.split(/\r\n|\r|\n/).length
+    }
   },
   methods: {
+    loadFile (fileName) {
+      this.fileName = fileName + '.java'
+      this.text = this.examples[fileName]
+      this.submit()
+    },
     async submit () {
       this.isLoading = true
+      this.$store.commit('CLEAR_TOKENS')
+      this.tokensFile = ''
       if (!this.text) {
         this.isLoading = false
-        this.$store.commit('CLEAR_TOKENS')
         return
       }
       try {
         const data = await compile({ program: this.text })
-        console.log(data)
         this.$store.commit('SET_TOKENS', data)
         this.tokensFile = data.tokensFile
         this.encodedToken =
@@ -264,22 +291,6 @@ export default {
       }
       reader.onerror = evt => {
         console.error(evt)
-      }
-    }
-  },
-  directives: {
-    autosize: {
-      inserted (el) {
-        el.style.height = el.scrollHeight + 'px'
-        el.style.overflow = 'hidden'
-        el.style.resize = 'none'
-        function OnInput () {
-          el.style.height = 'auto'
-          el.style.height = el.scrollHeight + 'px'
-          el.scrollTop = el.scrollHeight
-          window.scrollTo(window.scrollLeft, el.scrollTop + el.scrollHeight)
-        }
-        el.addEventListener('textarea', OnInput, false)
       }
     }
   }

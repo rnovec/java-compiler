@@ -9,7 +9,7 @@ export default new Vuex.Store({
     tokensFile: [],
     semerrors: [],
     errors: [],
-    taddc: [],
+    taddc: []
   },
   mutations: {
     SET_TOKENS (state, data) {
@@ -24,8 +24,10 @@ export default new Vuex.Store({
 
     CLEAR_TOKENS (state) {
       state.symbolTable = []
-      state.errors = []
+      state.tokensFile = []
       state.semerrors = []
+      state.errors = []
+      state.taddc = []
     }
   },
   actions: {},
