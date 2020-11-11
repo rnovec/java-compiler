@@ -63,38 +63,6 @@
             </div>
           </div>
         </div>
-        <div class="card" v-if="symbolTable.length">
-          <header class="card-header">
-            <h3 class="card-header-title">
-              <i class="fas fa-table"></i>Tabla de símbolos
-            </h3>
-          </header>
-          <div class="content">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th>LEX</th>
-                  <th>TOKEN</th>
-                  <th>
-                    <abbr title="Type">Type</abbr>
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="(token, i) in symbolTable" :key="i">
-                  <th>{{ token.value }}</th>
-                  <td>{{ token.type }}</td>
-                  <td>{{ token.vartype }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-      <div
-        class="column"
-        v-if="errors.length || semerrors.length || tokensFile"
-      >
         <div v-if="errors.length || semerrors.length" class="card">
           <header class="card-header">
             <h5 class="card-header-title">
@@ -155,17 +123,20 @@
                 class="card-footer-item"
                 >Descargar tokens.txt</a
               >
+              <a @click="exportTriploAsCVS" class="card-footer-item"
+                >Descargar triplo.csv</a
+              >
             </footer>
           </div>
         </div>
-        <div class="card" v-if="taddc.length">
+        <div class="card" v-if="taddc.length && showTriplo">
           <header class="card-header">
             <h5 class="card-header-title">
               <i class="fas fa-table"></i>Triplos
             </h5>
           </header>
           <div class="content">
-            <table class="table" v-for="table in taddc">
+            <table class="table">
               <thead>
                 <tr>
                   <th>#</th>
@@ -177,11 +148,43 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="(row, i) in table">
+                <tr v-for="(row, i) in taddc">
                   <th>{{ i + 1 }}</th>
                   <td>{{ row.obj }}</td>
                   <td>{{ row.fuente }}</td>
                   <td>{{ row.op }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div
+        class="column"
+        v-if="errors.length || semerrors.length || tokensFile"
+      >
+        <div class="card" v-if="symbolTable.length">
+          <header class="card-header">
+            <h3 class="card-header-title">
+              <i class="fas fa-table"></i>Tabla de símbolos
+            </h3>
+          </header>
+          <div class="content">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>LEX</th>
+                  <th>TOKEN</th>
+                  <th>
+                    <abbr title="Type">Type</abbr>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(token, i) in symbolTable" :key="i">
+                  <th>{{ token.value }}</th>
+                  <td>{{ token.type }}</td>
+                  <td>{{ token.vartype }}</td>
                 </tr>
               </tbody>
             </table>
@@ -222,9 +225,11 @@ import ejemplo1 from '@/examples/ejemplo1.java'
 import ejemplo2 from '@/examples/ejemplo2.java'
 import ejemplo3 from '@/examples/ejemplo3.java'
 import ejemplo4 from '@/examples/ejemplo4.java'
+import exportDataMixin from '@/mixins/export-data'
 
 export default {
   name: 'App',
+  mixins: [exportDataMixin],
   data () {
     return {
       fileName: '',
@@ -251,6 +256,9 @@ export default {
     },
     tokensLines () {
       return this.tokensFile.split(/\r\n|\r|\n/).length
+    },
+    showTriplo() {
+      return process.env.NODE_ENV === 'development'
     }
   },
   methods: {
@@ -269,6 +277,7 @@ export default {
       }
       try {
         const data = await compile({ program: this.text })
+        console.log(data)
         this.$store.commit('SET_TOKENS', data)
         this.tokensFile = data.tokensFile
         this.encodedToken =
@@ -278,6 +287,10 @@ export default {
       } finally {
         this.isLoading = false
       }
+    },
+    exportTriploAsCVS () {
+      const props = ['op', 'obj', 'fuente']
+      this.handleDownload(props, this.taddc, props)
     },
     selectedFile () {
       let file = this.$refs.myFile.files[0]

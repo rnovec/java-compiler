@@ -1,6 +1,6 @@
 {
     "dest": "dist_electron/installers/",
-    "version": "2.0.0-beta",
+    "version": "2.0.0",
     "description": "Compiler for Java",
     "icon": "src_electron/icon.png",
     "executableName": "java-compiler",
