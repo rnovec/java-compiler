@@ -4,20 +4,24 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/java-compiler/bulma.min.css"
   },
   {
-    "revision": "30515541ffa10ccc4fe5",
-    "url": "/java-compiler/css/app.a18659f6.css"
+    "revision": "3deea09d02e7a897f270",
+    "url": "/java-compiler/css/app.42c439ee.css"
   },
   {
     "revision": "db5d2b474427c55f83a6a5eeb74aae43",
     "url": "/java-compiler/favicon.svg"
   },
   {
-    "revision": "62bfb126f986cfd19c8ff08bfaa604c5",
+    "revision": "a643dd0a8f88a4bd8379f86e542deeaa",
     "url": "/java-compiler/index.html"
   },
   {
-    "revision": "30515541ffa10ccc4fe5",
-    "url": "/java-compiler/js/app.4255261a.js"
+    "revision": "3deea09d02e7a897f270",
+    "url": "/java-compiler/js/app.99549e43.js"
+  },
+  {
+    "revision": "d436f6c7f3174082c229",
+    "url": "/java-compiler/js/chunk-7010d59d.3111b379.js"
   },
   {
     "revision": "340e5d193ac2828ace6a",
