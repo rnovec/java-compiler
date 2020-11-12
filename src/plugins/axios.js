@@ -4,7 +4,7 @@ const instance = axios.create({
   baseURL:
     process.env.NODE_ENV === 'development'
       ? 'http://localhost:8000/api/v1'
-      : 'https://compiler-api.herokuapp.comapi/v1',
+      : 'https://compiler-api.herokuapp.com/api/v1',
   timeout: 20000,
   mode: 'cors',
   withCredentials: false
