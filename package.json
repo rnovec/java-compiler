@@ -11,14 +11,17 @@
     "electron:serve": "vue-cli-service electron:serve",
     "postinstall": "electron-builder install-app-deps",
     "postuninstall": "electron-builder install-app-deps",
+    "win32": "electron-installer-windows --src dist_electron/SyntaxAnalyzer-win32-x64 --dest dist_electron/installers/ --arch amd64 --config src_electron/config.json",
     "deb64": "electron-installer-debian --src ./dist_electron/linux-unpacked/ --dest dist_electron/installers/ --arch amd64 --config src_electron/config.json",
-    "pack:debian": "npm run electron:build && cp -a ./src_electron/resources/. ./dist_electron/linux-unpacked/ && npm run deb64"
+    "pack:debian": "npm run electron:build && cp -a ./src_electron/resources/. ./dist_electron/linux-unpacked/ && npm run deb64",
+    "pack:win": "npm run electron:build && npm run win32"
   },
   "main": "background.js",
   "dependencies": {
     "buefy": "^0.8.0",
     "core-js": "^3.6.5",
     "electron-installer-debian": "^3.1.0",
+    "electron-installer-windows": "^3.0.0",
     "file-saver": "^2.0.2",
     "register-service-worker": "^1.7.1",
     "vue": "^2.6.11",
