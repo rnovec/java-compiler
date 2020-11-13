@@ -291,7 +291,7 @@ export default {
       }
     },
     exportTriploAsCVS () {
-      export_table_to_csv('triplo', 'table.csv')
+      export_table_to_csv('triplo', 'triplo.csv')
     },
     selectedFile () {
       let file = this.$refs.myFile.files[0]
