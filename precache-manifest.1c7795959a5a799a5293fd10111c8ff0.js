@@ -4,28 +4,28 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/java-compiler/bulma.min.css"
   },
   {
-    "revision": "d4cfeaa1d0420b874523",
-    "url": "/java-compiler/css/app.42c439ee.css"
+    "revision": "cd7bba5ab675a04b1175",
+    "url": "/java-compiler/css/app.e50d6b90.css"
   },
   {
     "revision": "db5d2b474427c55f83a6a5eeb74aae43",
     "url": "/java-compiler/favicon.svg"
   },
   {
-    "revision": "ffbd3aac25854a49394569288318b7a3",
+    "revision": "c553d7b71e429844358237e91eaefe4a",
     "url": "/java-compiler/index.html"
   },
   {
-    "revision": "d4cfeaa1d0420b874523",
-    "url": "/java-compiler/js/app.4b56b595.js"
+    "revision": "cd7bba5ab675a04b1175",
+    "url": "/java-compiler/js/app.fd47a837.js"
   },
   {
-    "revision": "d436f6c7f3174082c229",
-    "url": "/java-compiler/js/chunk-7010d59d.3111b379.js"
+    "revision": "5f428d92024f829e42a3",
+    "url": "/java-compiler/js/chunk-5ad02ba5.efa248e1.js"
   },
   {
-    "revision": "340e5d193ac2828ace6a",
-    "url": "/java-compiler/js/chunk-vendors.2843d7cc.js"
+    "revision": "69269a50ca0fdcca6fb2",
+    "url": "/java-compiler/js/chunk-vendors.2e3d5cd2.js"
   },
   {
     "revision": "cbcca5572dc9a70ff9b41b73f76712bc",
