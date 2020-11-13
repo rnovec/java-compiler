@@ -260,7 +260,7 @@ export default {
       return this.tokensFile.split(/\r\n|\r|\n/).length
     },
     showTriplo () {
-      return process.env.NODE_ENV !== 'development'
+      return process.env.NODE_ENV === 'development'
     }
   },
   methods: {
