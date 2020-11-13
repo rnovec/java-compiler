@@ -86,13 +86,13 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="(err, i) in semerrors">
+                <tr v-for="(err, i) in semerrors" :key="i">
                   <th>{{ err.type }}{{ i + 1 }}</th>
                   <td>{{ err.value }}</td>
                   <td>{{ err.line }}</td>
                   <td>{{ err.desc }}</td>
                 </tr>
-                <tr v-for="(err, i) in errors">
+                <tr v-for="(err, i) in errors" :key="i">
                   <th>{{ err.type }}</th>
                   <td>{{ err.value }}</td>
                   <td>{{ err.line }}</td>
@@ -129,30 +129,31 @@
             </footer>
           </div>
         </div>
-        <div class="card" v-if="taddc.length && showTriplo">
+        <div class="card" v-show="taddc.length && showTriplo">
           <header class="card-header">
             <h5 class="card-header-title">
               <i class="fas fa-table"></i>Triplos
             </h5>
           </header>
           <div class="content">
-            <table class="table">
+            <table id="triplo" class="table">
               <thead>
                 <tr>
                   <th>#</th>
-                  <th>Dato Objeto</th>
-                  <th>Fuente</th>
                   <th>
                     <abbr title="Type">Operador</abbr>
                   </th>
+
+                  <th>Dato Objeto</th>
+                  <th>Fuente</th>
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="(row, i) in taddc">
+                <tr v-for="(row, i) in taddc" :key="i">
                   <th>{{ i + 1 }}</th>
+                  <td>{{ row.op }}</td>
                   <td>{{ row.obj }}</td>
                   <td>{{ row.fuente }}</td>
-                  <td>{{ row.op }}</td>
                 </tr>
               </tbody>
             </table>
@@ -226,6 +227,7 @@ import ejemplo2 from '@/examples/ejemplo2.java'
 import ejemplo3 from '@/examples/ejemplo3.java'
 import ejemplo4 from '@/examples/ejemplo4.java'
 import exportDataMixin from '@/mixins/export-data'
+import { export_table_to_csv } from '@/vendor/HtmlTable2Excel'
 
 export default {
   name: 'App',
@@ -257,8 +259,8 @@ export default {
     tokensLines () {
       return this.tokensFile.split(/\r\n|\r|\n/).length
     },
-    showTriplo() {
-      return process.env.NODE_ENV === 'development'
+    showTriplo () {
+      return process.env.NODE_ENV !== 'development'
     }
   },
   methods: {
@@ -289,8 +291,7 @@ export default {
       }
     },
     exportTriploAsCVS () {
-      const props = ['op', 'obj', 'fuente']
-      this.handleDownload(props, this.taddc, props)
+      export_table_to_csv('triplo', 'table.csv')
     },
     selectedFile () {
       let file = this.$refs.myFile.files[0]
