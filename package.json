@@ -12,7 +12,7 @@
     "postinstall": "electron-builder install-app-deps",
     "postuninstall": "electron-builder install-app-deps",
     "deb64": "electron-installer-debian --src ./dist_electron/linux-unpacked/ --dest dist_electron/installers/ --arch amd64 --config src_electron/config.json",
-    "pack:debian": "npm run electron:build && npm run deb64"
+    "pack:debian": "npm run electron:build && cp -a ./src_electron/resources/. ./dist_electron/linux-unpacked/ && npm run deb64"
   },
   "main": "background.js",
   "dependencies": {
