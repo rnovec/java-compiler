@@ -118,13 +118,25 @@
             </div>
             <footer class="card-footer">
               <a
-                :href="encodedToken"
+                :href="encodedTxt(tokensFile)"
                 download="tokens.txt"
                 class="card-footer-item"
-                >Descargar tokens.txt</a
+                >tokens.txt</a
               >
               <a @click="exportTriploAsCVS" class="card-footer-item"
-                >Descargar triplo.csv</a
+                >triplo.csv</a
+              >
+              <a
+                :href="encodedTxt(asm)"
+                download="objeto.asm"
+                class="card-footer-item"
+                >objeto.asm</a
+              >
+              <a
+                :href="encodedTxt(program)"
+                download="optimized.java"
+                class="card-footer-item"
+                >optimized.java</a
               >
             </footer>
           </div>
@@ -236,6 +248,7 @@ export default {
     return {
       fileName: '',
       encodedToken: '',
+      encodedAsm: '',
       tokensFile: '',
       text: '',
       isLoading: false,
@@ -252,7 +265,14 @@ export default {
     this.submit()
   },
   computed: {
-    ...mapState(['symbolTable', 'errors', 'semerrors', 'taddc']),
+    ...mapState([
+      'symbolTable',
+      'errors',
+      'semerrors',
+      'taddc',
+      'program',
+      'asm'
+    ]),
     textLines () {
       return this.text.split(/\r\n|\r|\n/).length
     },
@@ -282,13 +302,14 @@ export default {
         console.log(data)
         this.$store.commit('SET_TOKENS', data)
         this.tokensFile = data.tokensFile
-        this.encodedToken =
-          'data:text/plain;charset=utf-8,' + encodeURIComponent(this.tokensFile)
       } catch (error) {
         console.log(error)
       } finally {
         this.isLoading = false
       }
+    },
+    encodedTxt (txt) {
+      return 'data:text/plain;charset=utf-8,' + encodeURIComponent(txt)
     },
     exportTriploAsCVS () {
       export_table_to_csv('triplo', 'triplo.csv')

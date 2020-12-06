@@ -9,7 +9,9 @@ export default new Vuex.Store({
     tokensFile: [],
     semerrors: [],
     errors: [],
-    taddc: []
+    taddc: [],
+    program: '',
+    asm: ''
   },
   mutations: {
     SET_TOKENS (state, data) {
@@ -20,6 +22,8 @@ export default new Vuex.Store({
       state.errors = filteredList.filter(e => !/ERRSEM/.test(e.type))
       state.semerrors = filteredList.filter(e => /ERRSEM/.test(e.type))
       state.taddc = data.taddc
+      state.program = data.program.join('\n')
+      state.asm = data.asm.join('\n')
     },
 
     CLEAR_TOKENS (state) {
